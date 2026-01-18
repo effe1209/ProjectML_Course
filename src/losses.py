@@ -1,6 +1,6 @@
 from __future__ import annotations
-from src.activations import sigmoid, softmax
 import numpy as np
+from src.activations import sigmoid, softmax
 
 def mse(pred : np.ndarray, actual: np.ndarray) -> np.ndarray:
     """
