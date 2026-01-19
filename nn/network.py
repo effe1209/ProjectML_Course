@@ -1,8 +1,5 @@
-from __future__ import annotations
 import numpy as np
-from src.layers import Layer
-
-
+from utils.layers import Layer
 
 class NeuralNetwork:
   def __init__(self, layer_dimensions: list[int], layer_activations: list[str], std : float = 0.1):
@@ -75,7 +72,7 @@ class NeuralNetwork:
     for i in range(len(self.layers)):
       w = np.array(self.layers[i].weights)
       w[:, 0] = 0.
-      gradients_times_eta = eta * gradients[i] 
-      gradient_new = gradients_times_eta + alpha * self.gradient_old[i]
-      self.layers[i].weights +=  gradient_new - 2 * lam * w
+      gradients_l2 = eta * gradients[i] - 2 * lam * w
+      gradient_new = gradients_l2 + alpha * self.gradient_old[i]
+      self.layers[i].weights +=  gradient_new
       self.gradient_old[i] = gradient_new

@@ -1,21 +1,11 @@
-from __future__ import annotations
 import numpy as np
-from src.activations import sigmoid, sigmoid_derivative, identity, identity_derivative, relu, relu_derivative, leaky_relu, leaky_relu_derivative, tanh, tanh_derivative
 
-
-def random_layer_init(input_dim: int, output_dim: int, std: float = 0.02) -> np.ndarray:
-    """
-    Creates the first weights of the neural network layer.
-
-    Args:
-        input_dim (int): Dimension of the input vector.
-        output_dim (int): Dimension of the output vector.
-        std (float, optional): Standard deviation of the normal distribution. Defaults to 0.02.
-
-    Returns:
-        np.ndarray: Matrix of the weights
-    """
-    return np.random.normal(loc=0.0, scale=std, size=(output_dim, input_dim))
+from utils.activations import (
+    identity, relu, leaky_relu, sigmoid, tanh,
+    identity_derivative, relu_derivative, leaky_relu_derivative, 
+    sigmoid_derivative, tanh_derivative
+)
+from utils.layers.random_layer import random_layer_init
 
 class Layer:
     """

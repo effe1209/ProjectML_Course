@@ -1,5 +1,5 @@
-from __future__ import annotations
 import numpy as np
+
 import copy
 
 class DataLoader:
@@ -53,8 +53,8 @@ class DataLoader:
     Splits the dataset un k folds, returns a list of tuples with the splits
     Args:
       k (int, optional): number of folds
-      shuffle (bool, optional): shuffles the dataset if true  
-   
+      shuffle (bool, optional): shuffles the dataset if true
+
     """
     length_dataset = len(self.X_train)
     datasets = [] #list of tuples of split datasets
@@ -121,48 +121,3 @@ class DataLoader:
       batches.append((X_train, y_train))
 
     return batches
-
-class StandardScaler:
-  """
-  Class for preprocessing data
-  """
-  def __init__(self, data: np.ndarray):
-    """
-    Args:
-      data (np.ndarray): data to preprocess
-    """
-    assert data.ndim == 2, "I need a 2d matrix for preprocessing"
-    self.row_mean = np.mean(data, axis = 0)
-    self.row_std = np.std(data, axis = 0)
-
-  def transform(self, data: np.ndarray) -> np.ndarray:
-    """
-    Transforms the data accordingly
-    Args:
-      data (np.ndarray): data to preprocess
-    """
-    assert data.ndim == 2, "I need a 2d matrix for preprocessing"
-    assert 0. not in self.row_std, "Can't divide by 0 in std scaling"
-    return (data - self.row_mean) / self.row_std
-
-  def inverse_transform(self, data: np.ndarray) -> np.ndarray:
-    """
-    Inverse Transforms the data accordingly
-    Args:
-      data (np.ndarray): data to preprocess
-    """
-    assert data.ndim == 2, "I need a 2d matrix for preprocessing"
-    return data * self.row_std + self.row_mean
-
-
-def onehot_monk(x: np.ndarray) -> np.ndarray:
-  '''
-  Takes a monk not one hotted np.array and returns a one hotted one
-  '''
-  x_onehot = []
-  columns_cardinality = [3, 3, 2, 3, 4, 2] #given by the problem
-  for column_id in range(x.shape[1]):
-    n_unique = columns_cardinality[column_id]
-    x_onehot.append(np.eye(n_unique)[x[:, column_id] - 1])
-  x_onehot = np.concatenate(x_onehot, axis=1)
-  return x_onehot
