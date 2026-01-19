@@ -34,12 +34,12 @@ The neural network is used to test and evaluate the performance on:
 
 ## Implementation Details
 **Training Set**
-| ID  | Inputs [$1-9$] | Target_1 | Target_2 | Target_3 | Target_4 |
+| ID  | Inputs [1-9] | Target_1 | Target_2 | Target_3 | Target_4 |
 | --- | -------------- | -------- | -------- | -------- | -------- |
 | 1   | Float          | Float    | FLoat    | Float    | Float    |
 
 **Blind Test Set**
-| ID  | Inputs [$1-9$] |
+| ID  | Inputs [1-9] |
 | --- | -------------- |
 | 1   | Float          |
 
