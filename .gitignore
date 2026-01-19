@@ -1,5 +1,30 @@
+# --- Python Base ---
 __pycache__/
+*.pyc
+
+# --- Ambienti Virtuali ---
 .venv/
-.ds_store/
+venv/
+env/
+
+# --- Editor e IDE ---
 .vscode/
+.idea/
+
+# --- Jupyter Notebooks ---
 .ipynb_checkpoints/
+
+# --- Mac OS ---
+.DS_Store
+.ds_store
+
+# --- Machine Learning & Dati ---
+# Ignora i modelli salvati (spesso sono pesanti)
+# Se vuoi versionare il modello finale, puoi togliere il commento a specifici file
+*.pkl
+*.pth
+*.h5
+
+# Ignora eventuali grafici generati al volo se non vuoi salvarli
+*.png
+*.jpg
