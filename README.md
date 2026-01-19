@@ -1,10 +1,10 @@
 # ProjectML_Course
 Machine learning - Project_A 
+Rete neurale con: Momentum, L2, Mini Batch, diverse funzioni di attivazione e tipi di loss.
 
 Un po' di note sparse, poi scriveremo benme e in inglese
 i dataset devno essere in data con struttura
 
-Rete neurale con: Momentum, L2, Mini Batch, diverse funzioni di attivazione e tipi di loss.
 ```text
 ROOT/
 ├── data/
@@ -28,5 +28,6 @@ ROOT/
 │   └── standard_scaler.py classe per fare standard scaling, fa fit con init, poi ha metodi transform e inverse transform
 │
 ├── monk.ipynb    notebook con grid search e addestramento sui 3 monk problems
+├── monk.ipynb  notebook di ml cup
 └── requirements.txt     contiene i requirements
 ```
