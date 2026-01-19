@@ -5,7 +5,7 @@ Un po' di note sparse, poi scriveremo benme e in inglese
 i dataset devno essere in data con struttura
 
 ```text
-PROJECT_ROOT/
+ROOT/
 ├── data/
 │   ├── ML CUP/ roba per ml cup, per ora vuoto
 │   └── monk/  cartella monk scaricata dal sito delle slide del prof, unzippata
