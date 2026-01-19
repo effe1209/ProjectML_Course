@@ -1,4 +1,5 @@
 import numpy as np
+from utils.activations import sigmoid
 
 def binary_cross_entropy_loss(pred : np.ndarray, actual: np.ndarray) -> np.ndarray:
     """

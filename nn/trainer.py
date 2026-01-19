@@ -5,7 +5,6 @@ from nn.network import NeuralNetwork
 from utils.losses import Loss
 from utils.data_manage import DataLoader, StandardScaler
 from utils.activations import sigmoid
-
 class Trainer:
   """
   Trains the neural network
@@ -66,7 +65,7 @@ class Trainer:
     plt.legend()
     plt.show()
 
-  def train(self, min_clip: float, max_clip: float, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
+  def train(self, min_clip: float, max_clip:float, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
