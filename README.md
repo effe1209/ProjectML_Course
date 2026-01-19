@@ -4,6 +4,7 @@ Machine learning - Project_A
 Un po' di note sparse, poi scriveremo benme e in inglese
 i dataset devno essere in data con struttura
 
+Rete neurale con: Momentum, L2, Mini Batch, diverse funzioni di attivazione e tipi di loss.
 ```text
 ROOT/
 ├── data/
