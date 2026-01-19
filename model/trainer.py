@@ -64,7 +64,7 @@ class Trainer:
     plt.legend()
     plt.show()
 
-  def train(self, min_clip: float, max_clip:float, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
+  def train(self, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -94,7 +94,6 @@ class Trainer:
         train_loss.append(np.mean(tr_loss)) #adds to the count of train loss
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
-        grad = [np.clip(g, min_clip, max_clip) for g in grad]
         self.nn.gradient_descent(gradients = grad, eta = self.eta, lam = self.lam, alpha = self.alpha)
 
       train_loss_vec.append(np.mean(train_loss)) #train loss mean
