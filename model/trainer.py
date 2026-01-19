@@ -2,9 +2,8 @@ import numpy as np
 import copy
 import matplotlib.pyplot as plt
 from model.network import NeuralNetwork
-from utils.losses import Loss
-from utils import DataLoader, StandardScaler
-from utils.activations import sigmoid
+from model.losses import Loss
+from utils import DataLoader
 class Trainer:
   """
   Trains the neural network

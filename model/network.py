@@ -1,5 +1,5 @@
 import numpy as np
-from utils.layers import Layer
+from model.layers import Layer
 
 class NeuralNetwork:
   def __init__(self, layer_dimensions: list[int], layer_activations: list[str], std : float = 0.1):
