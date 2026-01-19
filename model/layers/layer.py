@@ -1,11 +1,7 @@
 import numpy as np
 
-from utils.activations import (
-    identity, relu, leaky_relu, sigmoid, tanh,
-    identity_derivative, relu_derivative, leaky_relu_derivative, 
-    sigmoid_derivative, tanh_derivative
-)
-from utils.layers.random_layer import random_layer_init
+from model.activations import identity, identity_derivative, relu, relu_derivative, leaky_relu, leaky_relu_derivative, sigmoid, sigmoid_derivative, tanh, tanh_derivative
+from model.layers.random_layer import random_layer_init
 
 class Layer:
     """

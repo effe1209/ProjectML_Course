@@ -1,9 +1,9 @@
 import numpy as np
 import copy
 import matplotlib.pyplot as plt
-from nn.network import NeuralNetwork
+from model.network import NeuralNetwork
 from utils.losses import Loss
-from utils.data_manage import DataLoader, StandardScaler
+from utils import DataLoader, StandardScaler
 from utils.activations import sigmoid
 class Trainer:
   """

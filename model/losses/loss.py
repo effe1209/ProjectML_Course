@@ -1,13 +1,9 @@
 import numpy as np
 
-from utils.activations.sigmoid import sigmoid
-
-# Assicurati che i nomi dei file (.mse, .bce, etc.) siano giusti nella cartella utils/losses/
 from .mse import mse, mse_derivative
 from .sum_squares import sum_squares, sum_squares_derivative
 from .cce import softmax_cross_entropy_loss, softmax_cross_entropy_derivative
 from .bce import sigmoid_binary_cross_entropy_loss, sigmoid_binary_cross_entropy_loss_derivative
-from .mee import mee
 
 class Loss:
   """

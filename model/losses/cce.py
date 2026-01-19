@@ -1,4 +1,5 @@
 import numpy as np
+from model.activations import softmax
 
 def cross_entropy_loss(pred : np.ndarray, actual: np.ndarray) -> np.ndarray:
     """
