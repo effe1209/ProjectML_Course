@@ -1,3 +1,5 @@
+import numpy as np
+
 def cross_entropy_loss(pred : np.ndarray, actual: np.ndarray) -> np.ndarray:
     """
     Cross Entropy loss function.

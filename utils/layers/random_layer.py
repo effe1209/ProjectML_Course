@@ -1,3 +1,5 @@
+import numpy as np
+
 def random_layer_init(input_dim: int, output_dim: int, std: float = 0.02) -> np.ndarray:
     """
     Creates the first weights of the neural network layer.

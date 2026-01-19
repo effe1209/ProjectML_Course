@@ -1,2 +1,6 @@
-from .activations import identity, relu, leaky_relu, sigmoid, tanh, softmax
-from .activations_derivatives import identity_derivative, relu_derivative, leaky_relu_derivative, sigmoid_derivative, tanh_derivative
+from .identity import identity, identity_derivative
+from .relu import relu, relu_derivative
+from .leaky_relu import leaky_relu, leaky_relu_derivative
+from .sigmoid import sigmoid, sigmoid_derivative
+from .tanh import tanh, tanh_derivative
+from .softmax import softmax

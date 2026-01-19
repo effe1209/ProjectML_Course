@@ -5,6 +5,10 @@ class StandardScaler:
   Class for preprocessing data
   """
   def __init__(self, data: np.ndarray):
+    """
+    Args:
+      data (np.ndarray): data to preprocess
+    """
     assert data.ndim == 2, "I need a 2d matrix for preprocessing"
     self.row_mean = np.mean(data, axis = 0)
     self.row_std = np.std(data, axis = 0)
@@ -12,6 +16,8 @@ class StandardScaler:
   def transform(self, data: np.ndarray) -> np.ndarray:
     """
     Transforms the data accordingly
+    Args:
+      data (np.ndarray): data to preprocess
     """
     assert data.ndim == 2, "I need a 2d matrix for preprocessing"
     assert 0. not in self.row_std, "Can't divide by 0 in std scaling"
@@ -20,6 +26,8 @@ class StandardScaler:
   def inverse_transform(self, data: np.ndarray) -> np.ndarray:
     """
     Inverse Transforms the data accordingly
+    Args:
+      data (np.ndarray): data to preprocess
     """
     assert data.ndim == 2, "I need a 2d matrix for preprocessing"
     return data * self.row_std + self.row_mean

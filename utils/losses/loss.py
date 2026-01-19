@@ -1,14 +1,20 @@
 import numpy as np
+
+from utils.activations.sigmoid import sigmoid
+
+# Assicurati che i nomi dei file (.mse, .bce, etc.) siano giusti nella cartella utils/losses/
 from .mse import mse, mse_derivative
 from .sum_squares import sum_squares, sum_squares_derivative
 from .cce import softmax_cross_entropy_loss, softmax_cross_entropy_derivative
+from .bce import sigmoid_binary_cross_entropy_loss, sigmoid_binary_cross_entropy_loss_derivative
+from .mee import mee
 
 class Loss:
   """
   Una classe per la loss che si inizializza con il nome della loss e contiene metodi per il calcolo di loss e gradiente
   """
-  loss_dic = {'mse': mse, 'sum squares': sum_squares, 'cross entropy softmax': softmax_cross_entropy_loss}
-  loss_derivative_dic = {'mse': mse_derivative, 'sum squares': sum_squares_derivative, 'cross entropy softmax': softmax_cross_entropy_derivative}
+  loss_dic = {'mse': mse, 'sum squares': sum_squares, 'cross entropy softmax': softmax_cross_entropy_loss, 'binary cross entropy sigmoid' : sigmoid_binary_cross_entropy_loss}
+  loss_derivative_dic = {'mse': mse_derivative, 'sum squares': sum_squares_derivative, 'cross entropy softmax': softmax_cross_entropy_derivative, 'binary cross entropy sigmoid' : sigmoid_binary_cross_entropy_loss_derivative}
 
   def __init__(self, loss_f: str):
     """
@@ -16,7 +22,7 @@ class Loss:
     Args:
       loss_f (str): nome della loss
     """
-    assert loss_f in ['mse', 'sum squares', 'cross entropy softmax'], "Loss not supported"
+    assert loss_f in ['mse', 'sum squares', 'cross entropy softmax', 'binary cross entropy sigmoid'], "Loss not supported"
     self.loss_f = loss_f
 
   def compute_loss(self, pred: np.ndarray, actual: np.ndarray) -> np.ndarray:

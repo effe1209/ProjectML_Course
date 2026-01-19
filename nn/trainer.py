@@ -1,9 +1,10 @@
 import numpy as np
 import copy
 import matplotlib.pyplot as plt
-from utils.nn.network import NeuralNetwork
+from nn.network import NeuralNetwork
 from utils.losses import Loss
 from utils.data_manage import DataLoader, StandardScaler
+from utils.activations import sigmoid
 
 class Trainer:
   """
@@ -21,9 +22,6 @@ class Trainer:
                 eta: float = 0.01,
                 lam: float = 0.,
                 alpha: float = 0.,
-                tau: int = 100,
-                std_scale_x: bool = False,
-                std_scale_y: bool = False,
                 batch_size: int = 8,
                 shuffle_batches: bool = True,
                 keep_last_batch:bool = False
@@ -52,9 +50,6 @@ class Trainer:
     self.eta = eta
     self.lam = lam
     self.alpha = alpha
-    self.tau = tau
-    self.std_scale_x = std_scale_x
-    self.std_scale_y = std_scale_y
     self.batch_size = batch_size
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
@@ -71,7 +66,7 @@ class Trainer:
     plt.legend()
     plt.show()
 
-  def train(self, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
+  def train(self, min_clip: float, max_clip: float, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -88,25 +83,8 @@ class Trainer:
     train_loss_vec = []
     val_loss_vec = []
 
-    # Scale the datasets
-    if self.std_scale_x:
-      std_scaler = StandardScaler(self.X_train)
-      self.X_train = std_scaler.transform(self.X_train)
-      if Val_exists:
-        self.X_val = std_scaler.transform(self.X_val)
-
-    if self.std_scale_y:
-      std_scaler = StandardScaler(self.y_train)
-      self.y_train = std_scaler.transform(self.y_train)
-      if Val_exists:
-        self.y_val = std_scaler.transform(self.y_val)
-
+    # Initialize the datasets
     data_loader = DataLoader(X_dataset=self.X_train, y_dataset=self.y_train)
-
-    # Learning rate linear decay
-    initial_eta = self.eta
-    tau = self.tau
-    final_eta = initial_eta / 100
 
     # Train
     for epoch in range(self.epochs):
@@ -118,14 +96,8 @@ class Trainer:
         train_loss.append(np.mean(tr_loss)) #adds to the count of train loss
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
+        grad = [np.clip(g, min_clip, max_clip) for g in grad]
         self.nn.gradient_descent(gradients = grad, eta = self.eta, lam = self.lam, alpha = self.alpha)
-
-      # update di eta
-      if epoch + 1 <= tau:
-        gamma = (epoch + 1) / tau
-        self.eta = initial_eta * (1 - gamma) + final_eta * gamma
-      else:
-        self.eta = final_eta
 
       train_loss_vec.append(np.mean(train_loss)) #train loss mean
 

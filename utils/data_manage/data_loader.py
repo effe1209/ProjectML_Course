@@ -1,19 +1,18 @@
 import numpy as np
+
 import copy
 
 class DataLoader:
   """
   Manages the datasets
   """
-  def __init__(self, train_dir: str = None, test_dir: str = None, X_dataset: np.ndarray = None, y_dataset: np.ndarray = None):
+  def __init__(self, X_dataset: np.ndarray, y_dataset: np.ndarray):
     """
-    prende le directory, poi crea X_train, y_train, X_test
+    Arhgs:
+      X_dataset (np.ndarray): X dataset
+      y_dataset (np.ndarray): y dataset
     """
-    if train_dir is not None and test_dir is not None:
-      pass #qui si carica i file tipo ML CUP
-
-    elif X_dataset is not None and y_dataset is not None:
-      self.X_train, self.y_train = X_dataset, y_dataset
+    self.X_train, self.y_train = X_dataset, y_dataset
 
   def shuffle(self, shuffle: bool, X: np.ndarray, y:np.ndarray):
     """
@@ -51,7 +50,11 @@ class DataLoader:
 
   def k_fold_split(self, k: int = 4, shuffle: bool = True) -> list[tuple[np.ndarray, np.ndarray]]:
     """
-    Splitta il dataset in k fold, restituisce una lista di tuple ognuna contenenti il train set splittato in k parti
+    Splits the dataset un k folds, returns a list of tuples with the splits
+    Args:
+      k (int, optional): number of folds
+      shuffle (bool, optional): shuffles the dataset if true
+
     """
     length_dataset = len(self.X_train)
     datasets = [] #list of tuples of split datasets
@@ -70,7 +73,10 @@ class DataLoader:
 
   def k_fold(self,  k: int = 4, shuffle: bool = True) -> list[tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]]:
     """
-    restituisce k set ognuno contenenti train x,y e val x,y
+    returns a list of k tuples each one containing train x,y and val x,y
+    Args:
+      k (int, optional): number of folds
+      shuffle (bool, optional): shuffles the dataset if true
     """
     datasets = self.k_fold_split(k, shuffle)
     k_split_datasets = []
@@ -86,6 +92,14 @@ class DataLoader:
     return k_split_datasets
 
   def get_batches(self, dataset : tuple[np.ndarray, np.ndarray], batch_size : int = 32, shuffle: bool = True, keep_last : bool = False) -> list[tuple[np.ndarray, np.ndarray]]:
+    """
+    Splits the dataset in batches
+    Args:
+      dataset (tuple[np.ndarray, np.ndarray]): dataset to split
+      batch_size (int, optional): batch size
+      shuffle (bool, optional): shuffle?
+      keep_last (bool, optional): if the last batch is smaller than batch size, keep it?
+    """
     length_dataset = len(dataset[0])
     batches = []
 
