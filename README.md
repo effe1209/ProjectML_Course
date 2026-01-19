@@ -3,6 +3,7 @@ Machine learning - Project_A
 
 Un po' di note sparse, poi scriveremo benme e in inglese
 i dataset devno essere in data con struttura
+'''
 data 
 ├──ML CUP
 │  └──roba per ml cup, per ora vuoto
@@ -26,4 +27,4 @@ utils
     monk-onehot -> funzione per fare one hot encoding del monk, dato che i nunique del dataset sono noti
     standard_scaler -> classe per fare standard scaling, fa fit con init, poi ha metodi transform e inverse transform
 monk.ipynb -> notebook con grid search e addestramento sui 3 monk problems
-requirements.txt -> contiene i requirements 
+requirements.txt -> contiene i requirements '''
