@@ -52,19 +52,7 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def plot_loss(self, train_loss_vec: np.ndarray, val_loss_vec: np.ndarray):
-    """
-    takes train_loss_vec and val_loss_vec and plots them
-    """
-    plt.plot(train_loss_vec, label = 'train loss')
-    plt.plot(val_loss_vec, label = 'val loss')
-
-    plt.xlabel('epoch')
-    plt.ylabel('loss')
-    plt.legend()
-    plt.show()
-
-  def train(self, return_best_nn: bool = True, print_epochs: bool = False, plot_epochs: bool = False):
+  def train(self, return_best_nn: bool = True, print_epochs: bool = False):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -127,10 +115,6 @@ class Trainer:
       # Break for early stopping
       if best_epoch_passed >= self.early_stopping:
         break
-
-    #plot
-    if plot_epochs:
-      self.plot_loss(train_loss_vec, val_loss_vec)
 
     if return_best_nn:
       return best_nn
