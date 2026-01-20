@@ -16,7 +16,7 @@ class Trainer:
                 y_val: np.ndarray = None,
                 epochs: int = 500,
                 early_stopping: int = 100,
-                min_improvement: float = 0.05,
+                min_improvement: float = 0.1,
                 eta: float = 0.01,
                 lam: float = 0.,
                 alpha: float = 0.,
