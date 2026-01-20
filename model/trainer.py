@@ -88,8 +88,8 @@ class Trainer:
 
       #val loss
       if Val_exists:
-        out = self.nn.forward(self.X_val)
-        val_loss =  self.loss.compute_loss(out[-1][-1], self.y_val) #computes the test loss
+        out = self.nn.forward(self.X_val)[-1][-1]
+        val_loss =  self.loss.compute_loss(out, self.y_val) #computes the test loss
         val_loss_vec.append(np.mean(val_loss)) #val loss mean in the batch
         if np.mean(val_loss) < best_loss:
           best_loss = np.mean(val_loss)
@@ -116,5 +116,4 @@ class Trainer:
       if best_epoch_passed >= self.early_stopping:
         break
 
-    if return_best_nn:
-      return best_nn
+    return best_nn, train_loss_vec, val_loss_vec
