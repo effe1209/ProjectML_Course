@@ -11,6 +11,16 @@ The neural network framework is used to test and evaluate the performance on two
 - *Monk's Dataset:* a standard benchmark for classification task
 - *ML Cup:* dataset for regression task provided by course.
 
+## Implementation Details
+The framework is divided in object class to ensure modularization, legibility and security.
+### Architecture
+- **Layers**: the network is composed of *fully connected layer*. Each layer is indipendent and managing:
+  - **Weights and Biases**: to compute the linear projection (`net` value)
+  - **Activation Function**: to produce the output the of the layer (non-linear)
+  - **Backward Pass**: to propagate the error `delta` through the weights (*chain rule*)
+- **Neural Network**: the main class that create the entire architecture.
+  - 
+
 ## Code Structure
 ```text
 ROOT/
@@ -39,9 +49,26 @@ ROOT/
 └── requirements.txt            # Project dependencies - Required to run the code
 ```
 
-## Implementation Details
-Un po' di note sparse, poi scriveremo benme e in inglese
-i dataset devno essere in data con struttura
+## Installation
+To execute the experiments, ensure you have **Python** installed.
+We strongly recommended to set up a virtual enviroment to exclude issuess on dependencies.
+To install the required packages run the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+### Reproducing Experiment
+To reproduce the experiment on your device and to see the result presented in the report:
+1. Open the jupyter file (`monk.ipynb` or `mlcup.ipynb`)
+2. Run all cells sequentially.
+### Costomization
+The notebook by default make a grid search to tune the hyperparameters.
+You can costomization the search space of hyperparameter by modify `CONFIGURATIONS` dictionary.
+- **Log:** To print the the loss at each epoch: `print_epochs=False` in `trainer.train()`
+- **Plot:** To generate and print the plot of loss curves: `plot_epochs=True` in `trainer.train()`
+    **!Warning**: enabling the print of plot during grid search will slow down the execution and the output contains too many graphs.
 
 ### Dataset Structure
 #### Monk
@@ -77,24 +104,3 @@ One-Hot Encoding: features cardinality is known
 | ID  | Inputs [2-9] |
 | --- | ------------ |
 | 1   | Float        |
-
-## Installation
-To execute the experiments, ensure you have **Python** installed.
-We strongly recommended to set up a virtual enviroment to exclude issuess on dependencies.
-To install the required packages run the following command:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-### Reproducing Experiment
-To reproduce the experiment on your device and to see the result presented in the report:
-1. Open the jupyter file (`monk.ipynb` or `mlcup.ipynb`)
-2. Run all cells sequentially.
-### Costomization
-The notebook by default make a grid search to tune the hyperparameters.
-You can costomization the search space of hyperparameter by modify `CONFIGURATIONS` dictionary.
-- **Log:** To print the the loss at each epoch: `print_epochs=False` in `trainer.train()`
-- **Plot:** To generate and print the plot of loss curves: `plot_epochs=True` in `trainer.train()`
-    **!Warning**: enabling the print of plot during grid search will slow down the execution and the output contains too many graphs.
