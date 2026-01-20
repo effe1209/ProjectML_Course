@@ -63,7 +63,7 @@ pip install -r requirements.txt
 To reproduce the experiment on your device and to see the result presented in the report:
 1. Open the jupyter file (`monk.ipynb` or `mlcup.ipynb`)
 2. Run all cells sequentially.
-### Costomization
+### Customization
 The notebook by default make a grid search to tune the hyperparameters.
 You can costomization the search space of hyperparameter by modify `CONFIGURATIONS` dictionary.
 - **Log:** To print the the loss at each epoch: `print_epochs=False` in `trainer.train()`
