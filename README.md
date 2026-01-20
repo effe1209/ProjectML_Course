@@ -1,9 +1,9 @@
 # ProjectML_Course
 Machine learning - Project_A 
 
-**Authors:** Alessandro Testi, Elia Bocini, Francesco Fiaschi
-**Course:** Machine Learning
-**Date:** February 2026
+**Authors:** Alessandro Testi, Elia Bocini, Francesco Fiaschi  
+**Course:** Machine Learning  
+**Date:** February 2026  
 
 ## Project Aim
 The aim of this project is to implement a Neural Network framework built from scratch using only NumPy library.
