@@ -1,6 +1,5 @@
 import numpy as np
 import copy
-import matplotlib.pyplot as plt
 from model.network import NeuralNetwork
 from model.losses import Loss
 from utils import DataLoader
@@ -52,7 +51,7 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def train(self, return_best_nn: bool = True, print_epochs: bool = False):
+  def train(self, print_epochs: bool = False):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """

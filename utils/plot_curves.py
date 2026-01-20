@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_loss(train_loss_vec: np.ndarray, val_loss_vec: np.ndarray, y_label: str = 'loss', val_str: str = 'val'):
+def plot_curves(train_loss_vec: np.ndarray, val_loss_vec: np.ndarray, y_label: str = 'loss', val_str: str = 'val'):
   """
   takes train_loss_vec and val_loss_vec and plots them
   """
