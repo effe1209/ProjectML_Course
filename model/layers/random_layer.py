@@ -2,7 +2,7 @@ import numpy as np
 
 def random_layer_init(input_dim: int, output_dim: int, std: float = 0.02) -> np.ndarray:
     """
-    Creates the first weights of the neural network layer.
+    Creates the first weights of the neural network layer, initializes all the weights, and also the biases, using a normal distribution.
 
     Args:
         input_dim (int): Dimension of the input vector.
