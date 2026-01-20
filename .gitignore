@@ -176,3 +176,6 @@ cython_debug/
 .DS_Store
 .ds_store/
 .ipynb_checkpoints/
+
+.plots
+plots/
