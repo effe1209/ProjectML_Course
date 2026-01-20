@@ -16,6 +16,7 @@ class Trainer:
                 y_val: np.ndarray = None,
                 epochs: int = 500,
                 early_stopping: int = 100,
+                min_improvement: float = 0.01,
                 eta: float = 0.01,
                 lam: float = 0.,
                 alpha: float = 0.,
@@ -44,6 +45,7 @@ class Trainer:
     self.y_val = y_val
     self.epochs = epochs
     self.early_stopping = early_stopping
+    self.min_improvement = min_improvement
     self.eta = eta
     self.lam = lam
     self.alpha = alpha
@@ -90,16 +92,16 @@ class Trainer:
         out = self.nn.forward(self.X_val)[-1][-1]
         val_loss =  self.loss.compute_loss(out, self.y_val) #computes the test loss
         val_loss_vec.append(np.mean(val_loss)) #val loss mean in the batch
-        if np.mean(val_loss) < best_loss:
-          best_loss = np.mean(val_loss)
+        if np.mean(val_loss) < best_loss * (1 - self.min_improvement):
+          best_loss = np.mean(val_loss) 
           best_nn = copy.deepcopy(self.nn)
           best_epoch_passed = 0
         else:
           best_epoch_passed += 1
 
       else: #a mali estremi, si usa la train loss per sapere il miglior modello, ma non deve essere preso "sul serio"
-        if np.mean(train_loss) < best_loss:
-          best_loss = np.mean(train_loss)
+        if np.mean(train_loss) < best_loss * (1 - self.min_improvement):
+          best_loss = np.mean(train_loss) 
           best_nn = copy.deepcopy(self.nn)
           best_epoch_passed = 0
         else:
