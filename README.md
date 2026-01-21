@@ -125,8 +125,8 @@ One-Hot Encoding: features cardinality is known
 | 1   | Float            |
 
 # Result
-|              Monk 1               |                   Monk 2                    |
-| :-------------------------------: | :-----------------------------------------: |
-| ![Monk 1](data/result/Monk_1.jpg) |      ![Monk 2](data/result/Monk_2.jpg)      |
-|            **Monk 3**             |            **Monk 3 senza Reg.**            |
-| ![Monk 3](data/result/Monk_3.jpg) | ![Monk 3 NoL2](data/result/Monk_3_NoL2.jpg) |
+|                          Monk 1                           |                          Monk 2                           |
+| :-------------------------------------------------------: | :-------------------------------------------------------: |
+| ![Monk 1](data/result/Monk_1.jpg)<br> Accuracy: $100.0\%$ | ![Monk 2](data/result/Monk_2.jpg)<br> Accuracy: $100.0\%$ |
+|                        **Monk 3**                         |                   **Monk 3 senza Reg.**                   |
+| ![Monk 3](data/result/Monk_3.jpg)<br> Accuracy: $96.53\%$ |        ![Monk 3 NoL2](data/result/Monk_3_NoL2.jpg) <br>  Accuracy: $80\%$     |
