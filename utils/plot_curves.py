@@ -15,8 +15,7 @@ def plot_curves(train_loss_vec: np.ndarray, val_loss_vec: np.ndarray, y_label: s
   plt.rc('figure', titlesize=16)
   plt.rc('lines', linewidth=2)
   plt.rc('grid', alpha=0.6, linestyle='--')
-  
-  plt.figure(figsize=(5, 3))
+
   # Create the plot
   plt.plot(train_loss_vec, label = f'train {y_label}')
   plt.plot(val_loss_vec, label = f'{val_str} {y_label}')
