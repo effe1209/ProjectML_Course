@@ -26,6 +26,7 @@ def plot_curves(train_loss_vec: np.ndarray, val_loss_vec: np.ndarray, y_label: s
 
   #Save and show
   if save_plots:
+    os.makedirs('plots', exist_ok=True) #if dir doesn't exist it creates it
     plt.savefig(f'plots/{title}.pdf', format='pdf')
 
   plt.show()
