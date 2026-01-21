@@ -3,6 +3,9 @@ import copy
 from model.network import NeuralNetwork
 from model.losses import Loss
 from utils import DataLoader
+from model.activations import sigmoid
+from utils.plot_curves import plot_curves
+
 class Trainer:
   """
   Trains the neural network
@@ -53,7 +56,7 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def train(self, print_epochs: bool = False):
+  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_title: str= ''):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -70,6 +73,8 @@ class Trainer:
     train_loss_vec = []
     val_loss_vec = []
 
+    train_acc_vec = []
+    val_acc_vec = []
     # Initialize the datasets
     data_loader = DataLoader(X_dataset=self.X_train, y_dataset=self.y_train)
 
@@ -86,12 +91,28 @@ class Trainer:
         self.nn.gradient_descent(gradients = grad, eta = self.eta, lam = self.lam, alpha = self.alpha)
 
       train_loss_vec.append(np.mean(train_loss)) #train loss mean
+      #train acc
+      if plot_accuracy:
+        out = self.nn.forward(self.X_train)[-1][-1]  #have to use the last trained nn, otherwise is data leakage
+        if self.loss.loss_f == 'binary cross entropy sigmoid':
+          out = sigmoid(out)
 
+        predictions = np.round(out)
+        train_acc_vec.append(np.mean(predictions == self.y_train))
+      
       #val loss
       if Val_exists:
         out = self.nn.forward(self.X_val)[-1][-1]
         val_loss =  self.loss.compute_loss(out, self.y_val) #computes the test loss
-        val_loss_vec.append(np.mean(val_loss)) #val loss mean in the batch
+        val_loss_vec.append(np.mean(val_loss)) #val loss mean in the epoch
+        #val acc
+        if plot_accuracy:
+          if self.loss.loss_f == 'binary cross entropy sigmoid':
+            out = sigmoid(out)
+          
+          predictions = np.round(out)
+          val_acc_vec.append(np.mean(predictions == self.y_val))
+
         if np.mean(val_loss) < best_loss * (1 - self.min_improvement):
           best_loss = np.mean(val_loss) 
           best_nn = copy.deepcopy(self.nn)
@@ -116,5 +137,7 @@ class Trainer:
       # Break for early stopping
       if best_epoch_passed >= self.early_stopping:
         break
+    if plot_accuracy and Val_exists:
+      plot_curves(np.array(train_acc_vec), np.array(val_acc_vec), 'accuracy', 'test', title = plot_title, save_plots=True)
 
     return best_nn, train_loss_vec, val_loss_vec
