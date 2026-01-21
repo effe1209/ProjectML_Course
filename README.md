@@ -32,7 +32,7 @@ The framework is divided in object class to ensure modularization, legibility an
 - **Monk Notebook:**
   - **Model Selection:** select the best configuration based on validation
     - **Grid Search:** search the best combination of hyperparameter (e.g. learning rate, momentum)
-    - **K-Fold Cross-Validation:** for each configuration of grid search (k=5)
+    - **K-Fold Cross-Validation:** for each configuration of grid search ($`k=5`$)
     - **Metrics**: for each configuration save accuracy, epoch and instability of training (sum between k-fold)
     - **Early Stopping:** interrupt the training process based on the loss
       - *patience*
