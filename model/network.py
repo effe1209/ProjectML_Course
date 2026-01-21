@@ -2,7 +2,7 @@ import numpy as np
 from model.layers import Layer
 
 class NeuralNetwork:
-  def __init__(self, layer_dimensions: list[int], layer_activations: list[str], std : float = 0.1):
+  def __init__(self, layer_dimensions: list[int], layer_activations: list[str], std : float = None):
     """
     Initializes the NeuralNetwork.
 
@@ -13,8 +13,17 @@ class NeuralNetwork:
     """
     assert len(layer_dimensions) - 1 == len(layer_activations), "Dimensions -1 and activations must have the same length"
     self.layers = []
+
+    # Create layers, initializa with Xavier or He if std is None
     for i in range(len(layer_dimensions)-1):
-      self.layers.append(Layer(layer_dimensions[i], layer_dimensions[i + 1], std = std, act_f = layer_activations[i]))
+      dinamic_std = std
+      
+      if dinamic_std is None:
+        dinamic_std = np.sqrt(2 / (layer_dimensions[i] + layer_dimensions[i+1])) #Xavier initialization
+        if layer_activations[i] in ['relu', 'leaky relu']:
+          dinamic_std = np.sqrt(2 / (layer_dimensions[i])) #He initialization for relu
+      self.layers.append(Layer(layer_dimensions[i], layer_dimensions[i + 1], std = dinamic_std, act_f = layer_activations[i]))
+
     self.gradient_old = [np.zeros_like(layer.weights) for layer in self.layers] #previous gradients list, required by momentum.
 
   def forward(self, x: np.ndarray) -> tuple[list[np.ndarray], list[np.ndarray]]:
