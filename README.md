@@ -37,8 +37,8 @@ The framework is divided in object class to ensure modularization, legibility an
     - **Early Stopping:** interrupt the training process based on the loss
       - *patience*
       - *min_improvement*
-    - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
-    - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
+  - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
+  - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
 
 ## Code Structure
 ```text
