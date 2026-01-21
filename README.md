@@ -33,10 +33,11 @@ The framework is divided in object class to ensure modularization, legibility an
   - **Model Selection:** select the best configuration based on validation
     - **Grid Search:** search the best combination of hyperparameter (e.g. learning rate, momentum)
     - **K-Fold Cross-Validation:** for each configuration of grid search ($`k=5`$)
+      - Select the best configuration based on the mean of fold accuracy
     - **Metrics**: for each configuration save accuracy, epoch and instability of training (sum between k-fold)
     - **Early Stopping:** interrupt the training process based on the loss
-      - *patience*
-      - *min_improvement*
+      - *patience:* $`50`$ epochs
+      - *min_improvement:* $`0.1`$
   - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
   - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
 
