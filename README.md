@@ -19,7 +19,27 @@ The framework is divided in object class to ensure modularization, legibility an
   - **Activation Function**: to produce the output the of the layer (non-linear)
   - **Backward Pass**: to propagate the error `delta` through the weights (*chain rule*)
 - **Neural Network**: the main class that create the entire architecture.
-  - 
+  - **Initialization:** implement the dynamic `std` based on fan-in/fan-out (Xavier/Glorot)
+  - **Forward**: compute all layers' outputs
+  - **Backpropagation**: computation of gradient via chain rule
+  - **Gradient Descent:**
+    - *L2 Regolarization*
+    - *Momentum*
+- **Training:** the class which compute the train phase
+  - *Epoch:* random shuffling of batches at each epoch
+  - *Mini-batch SDG:* Weights updates on a subset
+  - Selection of the best neural network between epoch based on mean loss on validation
+- **Monk Notebook:**
+  - **Model Selection:** select the best configuration based on validation
+    - **Grid Search:** search the best combination of hyperparameter (e.g. learning rate, momentum)
+    - **K-Fold Cross-Validation:** for each configuration of grid search ($`k=5`$)
+      - Select the best configuration based on the mean of fold accuracy
+    - **Metrics**: for each configuration save accuracy, epoch and instability of training (sum between k-fold)
+    - **Early Stopping:** interrupt the training process based on the loss
+      - *patience:* $`50`$ epochs
+      - *min_improvement:* $`0.1`$
+  - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
+  - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
 
 ## Code Structure
 ```text
@@ -85,22 +105,29 @@ One-Hot Encoding: features cardinality is known
 | ID            | ID      | Categorical |             |       | no             |
 
 **Feature Descriprion**
-1. class: 0, 1 
-2. a1:    1, 2, 3
-3. a2:    1, 2, 3
-4. a3:    1, 2
-5. a4:    1, 2, 3
-6. a5:    1, 2, 3, 4
-7. a6:    1, 2
-8. Id:    (A unique symbol for each instance)
+1. class:  $`0,\ 1`$
+2. $`a1:`$     $`1,\ 2,\ 3`$
+3. $`a2:`$     $`1,\ 2,\ 3`$
+4. $`a3:`$     $`1,\ 2`$
+5. $`a4:`$     $`1,\ 2,\ 3`$
+6. $`a5:`$     $`1,\ 2,\ 3,\ 4`$
+7. $`a6:`$     $`1,\ 2`$
+8. $`Id:`$     (A unique symbol for each instance)
 
 ### Ml_Cup
 **Training Set**
-| ID  | Inputs [2-9] | Target_1 | Target_2 | Target_3 | Target_4 |
-| --- | ------------ | -------- | -------- | -------- | -------- |
-| 1   | Float        | Float    | FLoat    | Float    | Float    |
+| ID  | Inputs $`[2-9]`$ | Target_1 | Target_2 | Target_3 | Target_4 |
+| --- | ---------------- | -------- | -------- | -------- | -------- |
+| 1   | Float            | Float    | FLoat    | Float    | Float    |
 
 **Blind Test Set**
-| ID  | Inputs [2-9] |
-| --- | ------------ |
-| 1   | Float        |
+| ID  | Inputs $`[2-9]`$ |
+| --- | ---------------- |
+| 1   | Float            |
+
+# Result
+|                          Monk 1                           |                          Monk 2                           |
+| :-------------------------------------------------------: | :-------------------------------------------------------: |
+| ![Monk 1](data/result/Monk_1.jpg)<br> Accuracy: $100.0\%$ | ![Monk 2](data/result/Monk_2.jpg)<br> Accuracy: $100.0\%$ |
+|                        **Monk 3**                         |                   **Monk 3 senza Reg.**                   |
+| ![Monk 3](data/result/Monk_3.jpg)<br> Accuracy: $96.53\%$ |        ![Monk 3 NoL2](data/result/Monk_3_NoL2.jpg) <br>  Accuracy: $80\%$     |
