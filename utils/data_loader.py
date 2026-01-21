@@ -105,6 +105,9 @@ class DataLoader:
     #shuffle
     X, y = self.shuffle(shuffle, dataset[0], dataset[1])
 
+    if batch_size == -1:
+      batch_size = length_dataset
+
     # creates a list of points where the dataset has to be cut
     cut_indices = []
     for _ in range(length_dataset // batch_size + 1):
