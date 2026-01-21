@@ -116,10 +116,17 @@ One-Hot Encoding: features cardinality is known
 ### Ml_Cup
 **Training Set**
 | ID  | Inputs $`[2-9]`$ | Target_1 | Target_2 | Target_3 | Target_4 |
-| --- | ------------ | -------- | -------- | -------- | -------- |
-| 1   | Float        | Float    | FLoat    | Float    | Float    |
+| --- | ---------------- | -------- | -------- | -------- | -------- |
+| 1   | Float            | Float    | FLoat    | Float    | Float    |
 
 **Blind Test Set**
 | ID  | Inputs $`[2-9]`$ |
-| --- | ------------ |
-| 1   | Float        |
+| --- | ---------------- |
+| 1   | Float            |
+
+# Result
+|              Monk 1               |                   Monk 2                    |
+| :-------------------------------: | :-----------------------------------------: |
+| ![Monk 1](data/result/Monk_1.jpg) |      ![Monk 2](data/result/Monk_2.jpg)      |
+|            **Monk 3**             |            **Monk 3 senza Reg.**            |
+| ![Monk 3](data/result/Monk_3.jpg) | ![Monk 3 NoL2](data/result/Monk_3_NoL2.jpg) |
