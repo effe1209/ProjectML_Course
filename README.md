@@ -129,10 +129,10 @@ One-Hot Encoding: features cardinality is known
 ### Hyperparameters and Avarage Prediction
 |     Problem      |    Units     |    Act. Functions    | Loss  |  Eta   | Lambda | Alpha | Mini-Batches | MSE (TR/TS) | Accuracy (TR/TS) |
 | :--------------: | :----------: | :------------------: | :---: | :----: | :----: | :---: | :----------: | :---------: | :--------------: |
-|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | $0.01$ |  $0.$  | $0.9$ |     $16$     |             |                  |
-|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | $0.01$ |  $0.$  | $0.5$ |     $16$     |             |                  |
-|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | $5e-4$ | $1e-4$ | $0.9$ |     $16$     |             |                  |
-| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | $0.01$ |  $/$   | $0.9$ |     $32$     |             |                  |
+|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01 |  0.  | 0.9 |     $16$     |             |                  |
+|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01 |  0.  | 0.5 |     $16$     |             |                  |
+|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 5e-4 | 1e-4 | 0.9 |     $16$     |             |                  |
+| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.01 |  /   | 0.9 |     $32$     |             |                  |
 
 ## Plots
 |                Monk 1 - Loss                |                  Monk 1 - Loss                  |
