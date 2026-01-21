@@ -104,22 +104,22 @@ One-Hot Encoding: features cardinality is known
 | ID            | ID      | Categorical |             |       | no             |
 
 **Feature Descriprion**
-1. class: $`0,\ 1`$
-2. $`a1:`$    $`1,\ 2,\ 3`$
-3. $`a2:`$    $`1,\ 2,\ 3`$
-4. $`a3:`$    $`1,\ 2`$
-5. $`a4:`$    $`1,\ 2,\ 3`$
-6. $`a5:`$    $`1,\ 2,\ 3,\ 4`$
-7. $`a6:`$    $`1,\ 2`$
-8. $`Id:    (A unique symbol for each instance)
+1. class:  $`0,\ 1`$
+2. $`a1:`$     $`1,\ 2,\ 3`$
+3. $`a2:`$     $`1,\ 2,\ 3`$
+4. $`a3:`$     $`1,\ 2`$
+5. $`a4:`$     $`1,\ 2,\ 3`$
+6. $`a5:`$     $`1,\ 2,\ 3,\ 4`$
+7. $`a6:`$     $`1,\ 2`$
+8. $`Id:`$     (A unique symbol for each instance)
 
 ### Ml_Cup
 **Training Set**
-| ID  | Inputs [2-9] | Target_1 | Target_2 | Target_3 | Target_4 |
+| ID  | Inputs $`[2-9]`$ | Target_1 | Target_2 | Target_3 | Target_4 |
 | --- | ------------ | -------- | -------- | -------- | -------- |
 | 1   | Float        | Float    | FLoat    | Float    | Float    |
 
 **Blind Test Set**
-| ID  | Inputs [2-9] |
+| ID  | Inputs $`[2-9]`$ |
 | --- | ------------ |
 | 1   | Float        |
