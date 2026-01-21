@@ -115,7 +115,7 @@ One-Hot Encoding: features cardinality is known
 
 ### Ml_Cup
 **Training Set**
-| ID  | Inputs $`[2-9]`$ | Target_1 | Target_2 | Target_3 | Target_4 |
+| ID  | Inputs $`[2-9]`$ | Target_`$1`$ | Target_`$2`$ | Target_`$3`$ | Target_`$4`$ |
 | --- | ------------ | -------- | -------- | -------- | -------- |
 | 1   | Float        | Float    | FLoat    | Float    | Float    |
 
