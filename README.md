@@ -125,13 +125,24 @@ One-Hot Encoding: features cardinality is known
 | --- | ---------------- |
 | 1   | Float            |
 
-# Result
-|           Monk 1 - Loss           |                Monk 1 - Loss                |
-| :-------------------------------: | :-----------------------------------------: |
-| ![Monk 1](data/result/Monk-1-Loss.jpg) |      ![Monk 1](data/result/Monk-1-Accuracy.jpg)      |
-|         **Monk 2 - Loss**         |              **Monk 2 - Loss**              |
-| ![Monk 2](data/result/Monk-2-Loss.jpg) |      ![Monk 2](data/result/Monk-2-Accuracy.jpg)      |
-|         **Monk 3 - Loss**         |            **Monk 3 - Accuracy**            |
-| ![Monk 3](data/result/Monk-3-Loss.jpg) |      ![Monk 3](data/result/Monk-3-Accuracy.jpg)      |
-|     **Monk 3 - No L2 - Loss**     |        **Monk 3 - No L2 - Accuracy**        |
-| ![Monk 3](data/result/Monk-3-noL2-Loss.jpg) |      ![Monk 3](data/result/Monk-3-noL2-Accuracy.jpg)      |
+## Result
+### Hyperparameters and Avarage Prediction
+|     Problem      |        Units         |      Act. Functions       | Loss  |       Eta        |  Lambda  | Alpha | Mini-Batches | MSE (TR/TS) | Accuracy (TR/TS) |
+| :--------------: | :------------------: | :-----------------------: | :---: | :--------------: | :------: | :---: | :----------: | :---------: | :--------------: |
+|      Monk 1      |    $[17,\ 4,\ 1]$    |    $[tanh,\ identity]$     | B.C.E |      $0.01$      |   $0.$   | $0.9$ |     $16$     |             |                  |
+|      Monk 2      |    $[17,\ 4,\ 1]$    |    $[tanh,\ identity]$     | B.C.E |      $0.01$      |   $0.$   | $0.5$ |     $16$     |             |                  |
+|      Monk 3      |    $[17,\ 4,\ 1]$    |    $[tanh,\ identity]$     | B.C.E | $5\cdot 10^{-4}$ | $0^{-4}$ | $0.9$ |     $16$     |             |                  |
+| Monk 3 (no reg.) | $[17,\ 16,\ 16,\ 1]$ | $[l.r.,\ l.r.,\ identity]$ | B.C.E |      $0.01$      |   $/$    | $0.9$ |     $32$     |             |                  |
+
+## Plots
+|                Monk 1 - Loss                |                  Monk 1 - Loss                  |
+| :-----------------------------------------: | :---------------------------------------------: |
+|   ![Monk 1](data/result/Monk-1-Loss.jpg)    |   ![Monk 1](data/result/Monk-1-Accuracy.jpg)    |
+|              **Monk 2 - Loss**              |                **Monk 2 - Loss**                |
+|   ![Monk 2](data/result/Monk-2-Loss.jpg)    |   ![Monk 2](data/result/Monk-2-Accuracy.jpg)    |
+|              **Monk 3 - Loss**              |              **Monk 3 - Accuracy**              |
+|   ![Monk 3](data/result/Monk-3-Loss.jpg)    |   ![Monk 3](data/result/Monk-3-Accuracy.jpg)    |
+|          **Monk 3 - No L2 - Loss**          |          **Monk 3 - No L2 - Accuracy**          |
+| ![Monk 3](data/result/Monk-3-noL2-Loss.jpg) | ![Monk 3](data/result/Monk-3-noL2-Accuracy.jpg) |
+
+
