@@ -38,7 +38,7 @@ def grid_search_mlcup(LEN_CONFIGURATIONS: int, CONFIGURATIONS: list, k_fold: lis
                 y_val=y_val_scaled,
                 epochs=EPOCHS,
                 early_stopping=EARLY_STOPPING_PATIENCE, # no improvements in  epochs-> stop
-                min_improvement=0.1, #even small improvements are considered
+                min_improvement=0.0001, #even small improvements are considered
                 eta=ETA,                   # Learning rate iniziale
                 lam=LAMBDA,                # L2
                 alpha=ALPHA,               # Momentum
