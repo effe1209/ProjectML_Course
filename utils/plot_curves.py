@@ -24,6 +24,7 @@ def plot_curves(train_loss_vec: np.ndarray, val_loss_vec: np.ndarray, y_label: s
   plt.legend()
   plt.title(title)
 
+  plt.figure(figsize=(5, 3))
   #Save and show
   if save_plots:
     plt.savefig(f'plots/{title}.pdf', format='pdf')

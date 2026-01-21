@@ -4,6 +4,7 @@ from model.network import NeuralNetwork
 from model.losses import Loss
 from utils import DataLoader
 from model.activations import sigmoid
+from model.losses import mee
 from utils.plot_curves import plot_curves
 
 class Trainer:
@@ -56,7 +57,7 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_title: str= ''):
+  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_mee : bool = False, plot_title: str= ''):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -75,6 +76,9 @@ class Trainer:
 
     train_acc_vec = []
     val_acc_vec = []
+
+    train_mee_vec = []
+    val_mee_vec = []
     # Initialize the datasets
     data_loader = DataLoader(X_dataset=self.X_train, y_dataset=self.y_train)
 
@@ -93,12 +97,16 @@ class Trainer:
       train_loss_vec.append(np.mean(train_loss)) #train loss mean
       #train acc
       if plot_accuracy:
-        out = self.nn.forward(self.X_train)[-1][-1]  #have to use the last trained nn, otherwise is data leakage
+        out = self.nn.forward(self.X_train)[-1][-1] 
         if self.loss.loss_f == 'binary cross entropy sigmoid':
           out = sigmoid(out)
 
         predictions = np.round(out)
         train_acc_vec.append(np.mean(predictions == self.y_train))
+      #train mee
+      if plot_mee:
+        out = self.nn.forward(self.X_train)[-1][-1]  
+        train_mee_vec.append(np.mean(mee(self.y_train, out)))
       
       #val loss
       if Val_exists:
@@ -112,6 +120,11 @@ class Trainer:
           
           predictions = np.round(out)
           val_acc_vec.append(np.mean(predictions == self.y_val))
+
+        #validation mee
+        if plot_mee:
+            out = self.nn.forward(self.X_val)[-1][-1]  
+            val_mee_vec.append(np.mean(mee(self.y_val, out)))
 
         if np.mean(val_loss) < best_loss * (1 - self.min_improvement):
           best_loss = np.mean(val_loss) 
@@ -139,5 +152,8 @@ class Trainer:
         break
     if plot_accuracy and Val_exists:
       plot_curves(np.array(train_acc_vec), np.array(val_acc_vec), 'accuracy', 'test', title = plot_title, save_plots=True)
+    
+    if plot_mee and Val_exists:
+      plot_curves(np.array(train_mee_vec), np.array(val_mee_vec), 'mee', 'test', title = plot_title, save_plots=True)
 
     return best_nn, train_loss_vec, val_loss_vec
