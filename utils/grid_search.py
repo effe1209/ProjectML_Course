@@ -51,11 +51,14 @@ def grid_search_mlcup(LEN_CONFIGURATIONS: int, CONFIGURATIONS: list, k_fold: lis
             CONFIG_DICTIONARY_INSTABILITY_TRAIN[i] += instability_coeff(train_loss_vector)
             CONFIG_DICTIONARY_INSTABILITY_VAL[i] += instability_coeff(test_loss_vector)
             CONFIG_DICTIONARY_TRAIN_LOSS_DIFF[i] += tran_val_diff(train_loss_vector, test_loss_vector)
-            CONFIG_DICTIONARY_TEST_LOSS[i].append(test_loss_vector[-1])
-            #val accuracy
+            #final nn loss and std
             out = nn.forward(X_val_scaled)[-1][-1]
             out = y_scaler.inverse_transform(out)
-            print(f"Mee: {np.mean(mee(out, y_v))}")
+            CONFIG_DICTIONARY_TEST_LOSS[i].append( np.mean(mee(out, y_v)))
+            #val accuracy
+            out = best_nn.forward(X_val_scaled)[-1][-1]
+            out = y_scaler.inverse_transform(out)
+            print(f"Mee best: {np.mean(mee(out, y_v))}")
             CONFIG_DICTIONARY[i] += np.mean(mee(out, y_v))
     return CONFIG_DICTIONARY, CONFIG_DICTIONARY_EPOCHS, CONFIG_DICTIONARY_INSTABILITY_TRAIN, CONFIG_DICTIONARY_INSTABILITY_VAL, CONFIG_DICTIONARY_TRAIN_LOSS_DIFF, CONFIG_DICTIONARY_TEST_LOSS
 

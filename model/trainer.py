@@ -2,7 +2,7 @@ import numpy as np
 import copy
 from model.network import NeuralNetwork
 from model.losses import Loss
-from utils import DataLoader
+from utils import DataLoader, StandardScaler
 from model.activations import sigmoid
 from model.losses import mee
 from utils.plot_curves import plot_curves
@@ -57,7 +57,7 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_mee : bool = False, plot_title: str= ''):
+  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_mee : bool = False, plot_title: str= '', y_rescaler: StandardScaler = None):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -106,8 +106,12 @@ class Trainer:
           train_acc.append(predictions == y)
           
         # train mee
-        if plot_mee:
-          train_mee.append(mee(y, nn_output))
+        
+        if plot_mee and y_rescaler is not None:
+          train_mee.append(mee(y_rescaler.inverse_transform(y), y_rescaler.inverse_transform(nn_output)))
+        if plot_mee and y_rescaler is None:
+          train_mee.append(mee(nn_output, y))
+
 
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
@@ -137,9 +141,12 @@ class Trainer:
           val_acc_vec.append(np.mean(predictions == self.y_val))
 
         #val mee
-        if plot_mee:
+        if plot_mee and y_rescaler is not None:
             out = self.nn.forward(self.X_val)[-1][-1]  
-            val_mee_vec.append(np.mean(mee(self.y_val, out)))
+            val_mee_vec.append(np.mean(mee(y_rescaler.inverse_transform(self.y_val), y_rescaler.inverse_transform(out))))
+        if plot_mee and y_rescaler is None:
+          val_mee_vec.append(np.mean(mee(self.y_val, out)))
+
 
         #early stopping
         if np.mean(val_loss) < best_loss * (1 - self.min_improvement):
