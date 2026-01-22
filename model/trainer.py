@@ -4,7 +4,7 @@ from model.network import NeuralNetwork
 from model.losses import Loss
 from utils import DataLoader, StandardScaler
 from model.activations import sigmoid
-from model.losses import mee
+from model.losses import mee, mse
 from utils.plot_curves import plot_curves
 
 class Trainer:
@@ -20,7 +20,7 @@ class Trainer:
                 y_val: np.ndarray = None,
                 epochs: int = 500,
                 early_stopping: int = 100,
-                min_improvement: float = 0.1,
+                min_improvement: float = 0.01,
                 eta: float = 0.01,
                 lam: float = 0.,
                 alpha: float = 0.,
@@ -57,12 +57,13 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_mee : bool = False, plot_title: str= '', y_rescaler: StandardScaler = None):
+  def train(self, print_epochs: bool = False, plot_monk: bool = False, plot_mee : bool = False, plot_title: str= '', y_rescaler: StandardScaler = None):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
     Val_exists = self.X_val is not None and self.y_val is not None
-
+    plot_mse = plot_monk
+    plot_accuracy = plot_monk
     # store the best neural network weights
     best_nn = copy.deepcopy(self.nn)
     best_loss = np.inf
@@ -79,6 +80,9 @@ class Trainer:
 
     train_mee_vec = []
     val_mee_vec = []
+
+    train_mse_vec = []
+    val_mse_vec = []
     # Initialize the datasets
     data_loader = DataLoader(X_dataset=self.X_train, y_dataset=self.y_train)
 
@@ -88,6 +92,8 @@ class Trainer:
       train_loss = [] #keeps the count of train loss
       train_acc = [] #keeps the count of acc loss
       train_mee = [] #keeps the count of mee loss
+      train_mse = [] #keeps the count of mse loss
+
 
       for x, y in batches:
         b_size = x.shape[0]
@@ -106,12 +112,17 @@ class Trainer:
           train_acc.append(predictions == y)
           
         # train mee
-        
         if plot_mee and y_rescaler is not None:
           train_mee.append(mee(y_rescaler.inverse_transform(y), y_rescaler.inverse_transform(nn_output)))
         if plot_mee and y_rescaler is None:
           train_mee.append(mee(nn_output, y))
 
+        # train mse
+        if plot_mse:
+          if self.loss.loss_f == 'binary cross entropy sigmoid':
+            train_mse.append(mse(sigmoid(nn_output), y))
+          else:
+            train_mse.append(mse(nn_output, y))
 
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
@@ -126,6 +137,10 @@ class Trainer:
       if plot_mee:
         train_mee_vec.append(np.mean(np.concatenate(train_mee)))
       
+      #train mse
+      if plot_mse:
+        train_mse_vec.append(np.mean(np.concatenate(train_mse)))
+      
       #val loss
       if Val_exists:
         out = self.nn.forward(self.X_val)[-1][-1]
@@ -135,9 +150,10 @@ class Trainer:
         #val acc
         if plot_accuracy:
           if self.loss.loss_f == 'binary cross entropy sigmoid':
-            out = sigmoid(out)
-          
-          predictions = np.round(out)
+            out_acc = sigmoid(out)
+            predictions = np.round(out_acc)
+          else:
+            predictions = np.round(out)
           val_acc_vec.append(np.mean(predictions == self.y_val))
 
         #val mee
@@ -147,7 +163,13 @@ class Trainer:
         if plot_mee and y_rescaler is None:
           val_mee_vec.append(np.mean(mee(self.y_val, out)))
 
-
+        #val mse
+        if plot_mse:
+          if self.loss.loss_f == 'binary cross entropy sigmoid':
+            val_mse_vec.append(np.mean(mse(sigmoid(out), self.y_val)))
+          else:
+            val_mse_vec.append(np.mean(mse(out, self.y_val)))
+        
         #early stopping
         if np.mean(val_loss) < best_loss * (1 - self.min_improvement):
           best_loss = np.mean(val_loss) 
@@ -175,9 +197,12 @@ class Trainer:
         break
 
     if plot_accuracy and Val_exists:
-      plot_curves(np.array(train_acc_vec), np.array(val_acc_vec), 'accuracy', 'test', title = plot_title, save_plots=True)
+      plot_curves(np.array(train_acc_vec), np.array(val_acc_vec), 'accuracy', 'test', title = f"{plot_title} Accuracy", save_plots=True)
     
     if plot_mee and Val_exists:
       plot_curves(np.array(train_mee_vec), np.array(val_mee_vec), 'mee', 'test', title = plot_title, save_plots=True)
+
+    if plot_mse and Val_exists:
+      plot_curves(np.array(train_mse_vec), np.array(val_mse_vec), 'mse', 'test', title = f"{plot_title} MSE", save_plots=True)
 
     return best_nn, train_loss_vec, val_loss_vec

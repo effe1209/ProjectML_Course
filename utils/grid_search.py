@@ -9,9 +9,9 @@ from model.activations import sigmoid
 
 def grid_search_mlcup(LEN_CONFIGURATIONS: int, CONFIGURATIONS: list, k_fold: list, EPOCHS: int, EARLY_STOPPING_PATIENCE: int):
     # Here we create dictionaries for storing avg accuracies and epochs on k folds and other metrics, we will use them to select the best configuration
-    CONFIG_DICTIONARY, CONFIG_DICTIONARY_EPOCHS, CONFIG_DICTIONARY_INSTABILITY_TRAIN, CONFIG_DICTIONARY_INSTABILITY_VAL, CONFIG_DICTIONARY_TRAIN_LOSS_DIFF, CONFIG_DICTIONARY_TEST_LOSS = {}, {}, {}, {}, {}, {}
+    CONFIG_DICTIONARY, CONFIG_DICTIONARY_EPOCHS, CONFIG_DICTIONARY_INSTABILITY_TRAIN, CONFIG_DICTIONARY_INSTABILITY_VAL, CONFIG_DICTIONARY_TRAIN_LOSS_DIFF, CONFIG_DICTIONARY_TEST_LOSS, CONFIG_DICTIONARY_TRAIN_LOSS= {}, {}, {}, {}, {}, {}, {}
     for i in range(LEN_CONFIGURATIONS):
-        CONFIG_DICTIONARY[i], CONFIG_DICTIONARY_EPOCHS[i], CONFIG_DICTIONARY_INSTABILITY_TRAIN[i], CONFIG_DICTIONARY_INSTABILITY_VAL[i], CONFIG_DICTIONARY_TRAIN_LOSS_DIFF[i], CONFIG_DICTIONARY_TEST_LOSS[i] = 0, 0, 0, 0, 0, []
+        CONFIG_DICTIONARY[i], CONFIG_DICTIONARY_EPOCHS[i], CONFIG_DICTIONARY_INSTABILITY_TRAIN[i], CONFIG_DICTIONARY_INSTABILITY_VAL[i], CONFIG_DICTIONARY_TRAIN_LOSS_DIFF[i], CONFIG_DICTIONARY_TEST_LOSS[i], CONFIG_DICTIONARY_TRAIN_LOSS[i] = 0, 0, 0, 0, 0, [], []
     
     # Cross Validation X K-folds
     for i in range(LEN_CONFIGURATIONS): #iterate over all configurations
@@ -51,16 +51,20 @@ def grid_search_mlcup(LEN_CONFIGURATIONS: int, CONFIGURATIONS: list, k_fold: lis
             CONFIG_DICTIONARY_INSTABILITY_TRAIN[i] += instability_coeff(train_loss_vector)
             CONFIG_DICTIONARY_INSTABILITY_VAL[i] += instability_coeff(test_loss_vector)
             CONFIG_DICTIONARY_TRAIN_LOSS_DIFF[i] += tran_val_diff(train_loss_vector, test_loss_vector)
-            #final nn loss and std
+            # nn val loss and std
             out = nn.forward(X_val_scaled)[-1][-1]
             out = y_scaler.inverse_transform(out)
             CONFIG_DICTIONARY_TEST_LOSS[i].append( np.mean(mee(out, y_v)))
+            # nn val loss and std
+            out = nn.forward(X_train_scaled)[-1][-1]
+            out = y_scaler.inverse_transform(out)
+            CONFIG_DICTIONARY_TRAIN_LOSS[i].append( np.mean(mee(out, y_t)))
             #val accuracy
             out = best_nn.forward(X_val_scaled)[-1][-1]
             out = y_scaler.inverse_transform(out)
             print(f"Mee best: {np.mean(mee(out, y_v))}")
             CONFIG_DICTIONARY[i] += np.mean(mee(out, y_v))
-    return CONFIG_DICTIONARY, CONFIG_DICTIONARY_EPOCHS, CONFIG_DICTIONARY_INSTABILITY_TRAIN, CONFIG_DICTIONARY_INSTABILITY_VAL, CONFIG_DICTIONARY_TRAIN_LOSS_DIFF, CONFIG_DICTIONARY_TEST_LOSS
+    return CONFIG_DICTIONARY, CONFIG_DICTIONARY_EPOCHS, CONFIG_DICTIONARY_INSTABILITY_TRAIN, CONFIG_DICTIONARY_INSTABILITY_VAL, CONFIG_DICTIONARY_TRAIN_LOSS_DIFF, CONFIG_DICTIONARY_TEST_LOSS, CONFIG_DICTIONARY_TRAIN_LOSS
 
 
 def grid_search_monk(LEN_CONFIGURATIONS: int, CONFIGURATIONS: list, k_fold: list, EPOCHS: int, EARLY_STOPPING_PATIENCE: int):
