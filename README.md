@@ -91,7 +91,6 @@ The notebook by default make a grid search to tune the hyperparameters.
 You can costomization the search space of hyperparameter by modify `CONFIGURATIONS` dictionary.
 - **Log:** To print the the loss at each epoch: `print_epochs=False` in `trainer.train()`
 - **Plot:** To generate and print the plot of loss curves: `plot_epochs=True` in `trainer.train()`
-    **!Warning**: enabling the print of plot during grid search will slow down the execution and the output contains too many graphs.
 
 ### Dataset Structure
 #### Monk
@@ -171,10 +170,10 @@ To train and test the dataset we need to slip the dataset in training set (80%) 
 ### Hyperparameters and Avarage Prediction
 |     Problem      |    Units     |    Act. Functions    | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs |   MSE (TR/TS)   | Accuracy (TR/TS) |
 | :--------------: | :----------: | :------------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :-------------: | :--------------: |
-|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  | 0.001  |  0.9  |     $32$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
-|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.25  |   0.   |  0.9  |  full batch  |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
-|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.25  |  0.01  |  0.5  |  full batch  |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
-| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.25  |   0    |  0.5  |  full batch  |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
+|      Monk 1      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.1  | 0.001  |  0.9  |     $32$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
+|      Monk 2      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.25  |   0.   |  0.9  |  full batch  |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
+|      Monk 3      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.25  |  0.01  |  0.5  |  full batch  |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
+| Monk 3 (no reg.) | [17,8,8,1] | [relu,relu,sigmoid] | B.C.E | 0.25  |   0    |  0.5  |  full batch  |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
 
 Note: Note: MSE and Accuracy are the mean of 10 random weight initializations.
 
@@ -211,12 +210,6 @@ See [Appendix](#appendix) for the loss plot.
 | Epochs                 | 1000                   |
 | Patience               | 100                    |
 
-### K-fold Result
-| Mean MEE | Std of the MEE |
-| :------: | :------------: |
-|          |                |
-|          |                |
-|          |                |
 
 ### Best Configuration
 |   Units   |  Act. Functions  | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs | MEE (TR/VL) | MEE (Internal TS) |
