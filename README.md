@@ -16,10 +16,10 @@ The framework is divided in object class to ensure modularization, legibility an
 ### Architecture
 - **Layers**: the network is composed of *fully connected layer*. Each layer is indipendent and managing:
   - **Weights and Biases**: to compute the linear projection (`net` value)
-  - **Activation Function**: to produce the output the of the layer (non-linear)
+  - **Activation Function**: to produce the output `out` the of the layer (non-linear)
   - **Backward Pass**: to propagate the error `delta` through the weights (*chain rule*)
 - **Neural Network**: the main class that create the entire architecture.
-  - **Initialization:** implement the dynamic `std` based on fan-in/fan-out (Xavier/Glorot)
+  - **Initialization:** implement the dynamic `std` based on fan-in/fan-out (Xavier/Glorot or He)
   - **Forward**: compute all layers' outputs
   - **Backpropagation**: computation of gradient via chain rule
   - **Gradient Descent:**
@@ -36,8 +36,8 @@ The framework is divided in object class to ensure modularization, legibility an
       - Select the best configuration based on the mean of fold accuracy
     - **Metrics**: for each configuration save accuracy, epoch and instability of training (sum between k-fold)
     - **Early Stopping:** interrupt the training process based on the loss
-      - *patience:* $`50`$ epochs
-      - *min_improvement:* $`0.1`$
+      - *patience*
+      - *min_improvement* 
   - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
   - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
 
@@ -155,24 +155,24 @@ To train and test the dataset we need to slip the dataset in training set (80%) 
 | Input Neurons          | 17                     |
 | Output Neurons         | 1                      |
 | Hidden Layers          | 1, 2                   |
-| Hidden Layers Sizes    | 2, 4, 8                |
+| Hidden Layers Sizes    | 4, 8                |
 | Hidden Activation      | Tanh, ReLU, Leaky ReLU |
 | Output Activation      | Sigmoid                |
 | Loss Function          | MSE, B.C.E.            |
-| Learning Rate ($\eta$) | 0.1, 0.05              |
+| Learning Rate ($\eta$) | 0.25, 0.1             |
 | Momentum ($\alpha$)    | 0, 0.5, 0.9            |
 | L2 Reg. ($\lambda$)    | 0, 0.1, 0.01, 0.001    |
-| Batch Size             | 16, 32, full batch     |
+| Batch Size             | 32, full batch     |
 | Epochs                 | 500                    |
 | Patience               | 50                     |
 
 ### Hyperparameters and Avarage Prediction
 |     Problem      |    Units     |    Act. Functions    | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs |   MSE (TR/TS)   | Accuracy (TR/TS) |
 | :--------------: | :----------: | :------------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :-------------: | :--------------: |
-|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  |   0.   |  0.9  |     $16$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
-|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  |   0.   |  0.5  |     $16$     |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
-|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
-| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
+|      Monk 1      |   [17,4,1]   |   [relu,sigmoid]    | B.C.E | 0.01  |   0.   |  0.9  |     $16$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
+|      Monk 2      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.01  |   0.   |  0.5  |     $16$     |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
+|      Monk 3      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
+| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,sigmoid] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
 
 Note: MSE and Accuracy are the mean of 10 random weight initializations.
 
@@ -200,7 +200,7 @@ See [Appendix](#appendix) for the loss plot.
 | Hidden Layers          | 1, 2                   |
 | Hidden Layers Sizes    | 8, 16, 32              |
 | Hidden Activation      | Tanh, ReLU, Leaky ReLU |
-| Output Activation      | Sigmoid                |
+| Output Activation      | Linear                 |
 | Loss Function          | MSE                    |
 | Learning Rate ($\eta$) | 0.1, 0.05              |
 | Momentum ($\alpha$)    | 0, 0.5, 0.9            |
