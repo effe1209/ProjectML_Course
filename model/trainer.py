@@ -26,7 +26,7 @@ class Trainer:
                 alpha: float = 0.,
                 batch_size: int = 8,
                 shuffle_batches: bool = True,
-                keep_last_batch:bool = False
+                keep_last_batch:bool = True
                 ):
     """
     Initializes the Trainer.
@@ -92,7 +92,8 @@ class Trainer:
         train_loss.append(np.mean(tr_loss)) #adds to the count of train loss
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
-        self.nn.gradient_descent(gradients = grad, eta = self.eta, lam = self.lam, alpha = self.alpha)
+        b_size = x.shape[0]
+        self.nn.gradient_descent(gradients = grad, b_size=b_size ,eta = self.eta, lam = self.lam, alpha = self.alpha)
 
       train_loss_vec.append(np.mean(train_loss)) #train loss mean
       #train acc

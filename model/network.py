@@ -77,11 +77,10 @@ class NeuralNetwork:
       gradients.append(gradient)
     return gradients[::-1]#invert the list since we calculated them from the last to the first, lets return them in order
 
-  def gradient_descent(self, gradients: list[np.ndarray], eta: float, lam: float = 0, alpha: float = 0) -> None:
+  def gradient_descent(self, gradients: list[np.ndarray], eta: float, b_size: int, lam: float = 0, alpha: float = 0) -> None:
     for i in range(len(self.layers)):
       w = np.array(self.layers[i].weights)
       w[:, 0] = 0.
-      gradients_l2 = eta * gradients[i] - 2 * lam * w
-      gradient_new = gradients_l2 + alpha * self.gradient_old[i]
+      gradient_new = eta * (gradients[i] / b_size - 2 * lam * w) + alpha * self.gradient_old[i] #alpha, lambda and eta depend on each other. we also divide gradients magnitude by the batch size.
       self.layers[i].weights +=  gradient_new
       self.gradient_old[i] = gradient_new
