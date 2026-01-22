@@ -92,7 +92,8 @@ def grid_search_monk(LEN_CONFIGURATIONS: int, CONFIGURATIONS: list, k_fold: list
           X_val=X_val,
           y_val=y_val,
           epochs=EPOCHS,
-          early_stopping=EARLY_STOPPING_PATIENCE, # no improvements (implicitly greater than 5%) in 50 epochs-> stop
+          early_stopping=EARLY_STOPPING_PATIENCE, # no improvements ( greater than 1%) in 50 epochs-> stop
+          min_improvement = 0.01,
           eta=ETA,                   # Learning rate iniziale
           lam=LAMBDA,                # L2
           alpha=ALPHA,               # Momentum
