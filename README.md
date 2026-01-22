@@ -129,7 +129,7 @@ One-Hot Encoding: features cardinality is known
 | 1   | Float          |
 
 #### Split Dataset
-To train and test the model, we need to split the dataset into a training set (80%) and a blind test set (20%) to evaluate the generalization capability of our model.
+To train and test the dataset we need to slip the dataset in training set (80%) and blid test set (20%) to evaluate the generalization capability of our model.
 
 <table>
   <thead>
@@ -141,8 +141,10 @@ To train and test the model, we need to split the dataset into a training set (8
       <th rowspan="1" style="text-align:center; vertical-align:middle">Test Set</th>
     </tr>
     <tr>
-      <th style="text-align:center">Train Temporary</th>
-      <th style="text-align:center">Validation Temporary</th>
+      <th style="text-align:center">K-Fold</th>
+    </tr>
+        <tr>
+      <th style="text-align:center">Model Selection</th>
     </tr>
   </thead>
 </table>
@@ -169,10 +171,10 @@ To train and test the model, we need to split the dataset into a training set (8
 ### Hyperparameters and Avarage Prediction
 |     Problem      |    Units     |    Act. Functions    | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs |   MSE (TR/TS)   | Accuracy (TR/TS) |
 | :--------------: | :----------: | :------------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :-------------: | :--------------: |
-|      Monk 1      |   [17,4,1]   |   [relu,sigmoid]    | B.C.E | 0.01  |   0.   |  0.9  |     $16$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
-|      Monk 2      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.01  |   0.   |  0.5  |     $16$     |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
-|      Monk 3      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
-| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,sigmoid] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
+|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  |   0.   |  0.9  |     $16$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
+|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  |   0.   |  0.5  |     $16$     |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
+|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
+| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
 
 Note: Note: MSE and Accuracy are the mean of 10 random weight initializations.
 
