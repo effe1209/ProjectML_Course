@@ -6,6 +6,7 @@ from utils import DataLoader
 from model.activations import sigmoid
 from model.losses import mee
 from utils.plot_curves import plot_curves
+from model.losses import mse
 
 class Trainer:
   """
@@ -57,7 +58,7 @@ class Trainer:
     self.shuffle_batches = shuffle_batches
     self.keep_last_batch = keep_last_batch
 
-  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_mee : bool = False, plot_title: str= ''):
+  def train(self, print_epochs: bool = False, plot_accuracy: bool = False, plot_mee : bool = False, plot_mse : bool = False, plot_title: str= ''):
     """
     Trains the neural network based on the parameters passed to the constructor.
     """
@@ -79,6 +80,9 @@ class Trainer:
 
     train_mee_vec = []
     val_mee_vec = []
+
+    train_mse_vec = []
+    val_mse_vec = []
     # Initialize the datasets
     data_loader = DataLoader(X_dataset=self.X_train, y_dataset=self.y_train)
 
@@ -88,6 +92,7 @@ class Trainer:
       train_loss = [] #keeps the count of train loss
       train_acc = [] #keeps the count of acc loss
       train_mee = [] #keeps the count of mee loss
+      train_mse = [] #keeps the count of mse loss
 
       for x, y in batches:
         b_size = x.shape[0]
@@ -97,17 +102,23 @@ class Trainer:
         tr_loss = self.loss.compute_loss(nn_output, y)
         train_loss.append(np.mean(tr_loss)) #adds to the count of train loss
 
+        if self.loss.loss_f == 'binary cross entropy sigmoid':
+            probs = sigmoid(nn_output)
+        else:
+            probs = nn_output
+
         #train acc
         if plot_accuracy:
-          if self.loss.loss_f == 'binary cross entropy sigmoid':
-            predictions = np.round(sigmoid(nn_output))
-          else:
-            predictions = np.round(nn_output)
+          predictions = np.round(probs)
           train_acc.append(predictions == y)
           
         # train mee
         if plot_mee:
           train_mee.append(mee(y, nn_output))
+        
+        # train mse
+        if plot_mse:
+          train_mse.append(np.mean((mse(probs, y))))
 
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
@@ -121,6 +132,9 @@ class Trainer:
       #train mee
       if plot_mee:
         train_mee_vec.append(np.mean(np.concatenate(train_mee)))
+
+      if plot_mse:
+        train_mse_vec.append(np.mean(train_mse))
       
       #val loss
       if Val_exists:
@@ -128,13 +142,18 @@ class Trainer:
         val_loss =  self.loss.compute_loss(out, self.y_val) #computes the test loss
         val_loss_vec.append(np.mean(val_loss)) #val loss mean in the epoch
 
+        if self.loss.loss_f == 'binary cross entropy sigmoid':
+            probs_val = sigmoid(out)
+        else:
+            probs_val = out
         #val acc
         if plot_accuracy:
-          if self.loss.loss_f == 'binary cross entropy sigmoid':
-            out = sigmoid(out)
-          
-          predictions = np.round(out)
+          predictions = np.round(probs_val)
           val_acc_vec.append(np.mean(predictions == self.y_val))
+        
+        # val mse
+        if plot_mse:
+          val_mse_vec.append(np.mean((mse(probs_val, self.y_val))))
 
         #val mee
         if plot_mee:
@@ -172,5 +191,8 @@ class Trainer:
     
     if plot_mee and Val_exists:
       plot_curves(np.array(train_mee_vec), np.array(val_mee_vec), 'mee', 'test', title = plot_title, save_plots=True)
+
+    if plot_mse and Val_exists:
+      plot_curves(np.array(train_mse_vec), np.array(val_mse_vec), 'mse', 'test', title = plot_title, save_plots=True)
 
     return best_nn, train_loss_vec, val_loss_vec
