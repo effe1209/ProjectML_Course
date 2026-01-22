@@ -60,9 +60,12 @@ ROOT/
 │   └── trainer.py              # Automatically training process for neural network
 │
 ├── utils/
-│   ├── data_loader.py          # Handles dataset, including: shuffling, validation split, k-fold and mini-batch
-│   ├── monk_onehot.py          # Applies one hot encoding to Monk dataset (known cardinality)
-│   └── standard_scaler.py      # Standard scaler to perform Standardization and inverse transformation
+│   ├── data_loader.py              # Handles dataset, including: shuffling, validation split, k-fold and mini-batch
+│   └── standard_scaler.py          # Standard scaler to perform Standardization and inverse transformation
+│   └── grid_seach.py               # Loop to search the best hyperparameters with k-fold
+│   └── load_monk.py                # Load the dataset and applies one hot encoding to Monk dataset
+│   └── plot_curves.py              # Print the plots
+│   └── model_selection_helpers.py  # Metrics to select the best model
 │
 ├── monk.ipynb                  # Experiment notebook: model selection and model assessment with grid search for Monk
 ├── mlcup.ipynb.                # Experiment notebook for ML Cup with final result
@@ -116,33 +119,118 @@ One-Hot Encoding: features cardinality is known
 
 ### Ml_Cup
 **Training Set**
-| ID  | Inputs $`[2-9]`$ | Target_1 | Target_2 | Target_3 | Target_4 |
-| --- | ---------------- | -------- | -------- | -------- | -------- |
-| 1   | Float            | Float    | FLoat    | Float    | Float    |
+| ID  | Inputs $[2-9]$ | Target_1 | Target_2 | Target_3 | Target_4 |
+| --- | -------------- | -------- | -------- | -------- | -------- |
+| 1   | Float          | Float    | FLoat    | Float    | Float    |
 
 **Blind Test Set**
-| ID  | Inputs $`[2-9]`$ |
-| --- | ---------------- |
-| 1   | Float            |
+| ID  | Inputs $[2-9]$ |
+| --- | -------------- |
+| 1   | Float          |
 
-## Result
+#### Split Dataset
+To train and test the dataset we need to slip the dataset in training set (80%) and blid test set (20%) to evaluate the generalization capability of our model.
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3" style="text-align:center">Dataset</th>
+    </tr>
+    <tr>
+      <th colspan="2" style="text-align:center">Training Set</th>
+      <th rowspan="1" style="text-align:center; vertical-align:middle">Test Set</th>
+    </tr>
+    <tr>
+      <th style="text-align:center">Train Temporary</th>
+      <th style="text-align:center">Validation Temporary</th>
+    </tr>
+  </thead>
+</table>
+
+# Result
+## Monk
+### Grid Search Hyperparameter Space
+| Hyperparameter         | Values                 |
+| ---------------------- | ---------------------- |
+| Input Neurons          | 17                     |
+| Output Neurons         | 1                      |
+| Hidden Layers          | 1, 2                   |
+| Hidden Layers Sizes    | 2, 4, 8                |
+| Hidden Activation      | Tanh, ReLU, Leaky ReLU |
+| Output Activation      | Sigmoid                |
+| Loss Function          | MSE, B.C.E.            |
+| Learning Rate ($\eta$) | 0.1, 0.05              |
+| Momentum ($\alpha$)    | 0, 0.5, 0.9            |
+| L2 Reg. ($\lambda$)    | 0, 0.1, 0.01, 0.001    |
+| Batch Size             | 16, 32, full batch     |
+| Epochs                 | 500                    |
+| Patience               | 50                     |
+
 ### Hyperparameters and Avarage Prediction
-|     Problem      |    Units     |    Act. Functions    | Loss  |  Eta   | Lambda | Alpha | Mini-Batches | MSE (TR/TS) | Accuracy (TR/TS) |
-| :--------------: | :----------: | :------------------: | :---: | :----: | :----: | :---: | :----------: | :---------: | :--------------: |
-|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01 |  0.  | 0.9 |     $16$     |             |                  |
-|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01 |  0.  | 0.5 |     $16$     |             |                  |
-|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 5e-4 | 1e-4 | 0.9 |     $16$     |             |                  |
-| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.01 |  /   | 0.9 |     $32$     |             |                  |
+|     Problem      |    Units     |    Act. Functions    | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs |   MSE (TR/TS)   | Accuracy (TR/TS) |
+| :--------------: | :----------: | :------------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :-------------: | :--------------: |
+|      Monk 1      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  |   0.   |  0.9  |     $16$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
+|      Monk 2      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 0.01  |   0.   |  0.5  |     $16$     |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
+|      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
+| Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
+
+Note: Note: MSE and Accuracy are the mean of 10 random weight initializations.
 
 ## Plots
-|                Monk 1 - Loss                |                  Monk 1 - Loss                  |
-| :-----------------------------------------: | :---------------------------------------------: |
-|   ![Monk 1](data/result/Monk-1-Loss.jpg)    |   ![Monk 1](data/result/Monk-1-Accuracy.jpg)    |
-|              **Monk 2 - Loss**              |                **Monk 2 - Loss**                |
-|   ![Monk 2](data/result/Monk-2-Loss.jpg)    |   ![Monk 2](data/result/Monk-2-Accuracy.jpg)    |
-|              **Monk 3 - Loss**              |              **Monk 3 - Accuracy**              |
-|   ![Monk 3](data/result/Monk-3-Loss.jpg)    |   ![Monk 3](data/result/Monk-3-Accuracy.jpg)    |
-|          **Monk 3 - No L2 - Loss**          |          **Monk 3 - No L2 - Accuracy**          |
-| ![Monk 3](data/result/Monk-3-noL2-Loss.jpg) | ![Monk 3](data/result/Monk-3-noL2-Accuracy.jpg) |
 
 
+|                **Monk 1 - MSE**                 |                **Monk 1 - Accuracy**                 |
+| :---------------------------------------------: | :--------------------------------------------------: |
+|   ![Monk 1](data/result/Monk/Monk-1-MSE.png)    |   ![Monk 1](data/result/Monk/Monk-1-Accuracy.png)    |
+|                **Monk 2 - MSE**                 |                **Monk 2 - Accuracy**                 |
+|   ![Monk 2](data/result/Monk/Monk-2-MSE.png)    |   ![Monk 2](data/result/Monk/Monk-2-Accuracy.png)    |
+|                **Monk 3 - MSE**                 |                **Monk 3 - Accuracy**                 |
+|   ![Monk 3](data/result/Monk/Monk-3-MSE.png)    |   ![Monk 3](data/result/Monk/Monk-3-Accuracy.png)    |
+|            **Monk 3 - No L2 - Loss**            |            **Monk 3 - No L2 - Accuracy**             |
+| ![Monk 3](data/result/Monk/Monk-3-noL2-MSE.png) | ![Monk 3](data/result/Monk/Monk-3-noL2-Accuracy.png) |
+
+See [Appendix](#appendix) for the loss plot.
+
+## ML Cup
+### Grid Search Hyperparameter Space
+| Hyperparameter         | Values                 |
+| ---------------------- | ---------------------- |
+| Input Neurons          | 12                     |
+| Output Neurons         | 4                      |
+| Hidden Layers          | 1, 2                   |
+| Hidden Layers Sizes    | 8, 16, 32              |
+| Hidden Activation      | Tanh, ReLU, Leaky ReLU |
+| Output Activation      | Sigmoid                |
+| Loss Function          | MSE                    |
+| Learning Rate ($\eta$) | 0.1, 0.05              |
+| Momentum ($\alpha$)    | 0, 0.5, 0.9            |
+| L2 Reg. ($\lambda$)    | 0, 0.1, 0.001          |
+| Batch Size             | 64, full batch         |
+| Epochs                 | 1000                   |
+| Patience               | 100                    |
+
+### K-fold Result
+| Mean MEE | Std of the MEE |
+| :------: | :------------: |
+|          |                |
+|          |                |
+|          |                |
+
+### Best Configuration
+|   Units   |  Act. Functions  | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs | MEE (TR/VL) | MEE (Internal TS) |
+| :-------: | :--------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :---------: | :---------------- |
+| [12,16,4] | [tanh, identity] | M.S.E |  0.1  | 0.001  |  0.9  |     full     |     827     |             |                   |
+
+
+## Plots
+|             **Monk 1 - Loss**              |              **Monk 2 - Loss**              |
+| :----------------------------------------: | :-----------------------------------------: |
+| ![ML Cup](data/result/MLcup/MLcup-MEE.png) | ![ML Cup](data/result/MLcup/MLcup-Loss.png) |
+
+
+## Appendix
+|              **Monk 1 - Loss**              |                **Monk 2 - Loss**                 |
+| :-----------------------------------------: | :----------------------------------------------: |
+| ![Monk 1](data/result/Monk/Monk-1-Loss.png) |   ![Monk 2](data/result/Monk/Monk-2-Loss.png)    |
+|              **Monk 3 - Loss**              |            **Monk 3 - No L2 - Loss**             |
+| ![Monk 3](data/result/Monk/Monk-3-Loss.png) | ![Monk 3](data/result/Monk/Monk-3-noL2-Loss.png) |
