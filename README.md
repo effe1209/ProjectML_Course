@@ -141,8 +141,10 @@ To train and test the dataset we need to slip the dataset in training set (80%) 
       <th rowspan="1" style="text-align:center; vertical-align:middle">Test Set</th>
     </tr>
     <tr>
-      <th style="text-align:center">Train Temporary</th>
-      <th style="text-align:center">Validation Temporary</th>
+      <th style="text-align:center">K-Fold</th>
+    </tr>
+        <tr>
+      <th style="text-align:center">Model Selection</th>
     </tr>
   </thead>
 </table>
