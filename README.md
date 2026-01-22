@@ -129,7 +129,7 @@ One-Hot Encoding: features cardinality is known
 | 1   | Float          |
 
 #### Split Dataset
-To train and test the dataset we need to slip the dataset in training set (80%) and blid test set (20%) to evaluate the generalization capability of our model.
+To train and test the model, we need to split the dataset into a training set (80%) and a blind test set (20%) to evaluate the generalization capability of our model.
 
 <table>
   <thead>
@@ -174,7 +174,7 @@ To train and test the dataset we need to slip the dataset in training set (80%) 
 |      Monk 3      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
 | Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,sigmoid] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
 
-Note: MSE and Accuracy are the mean of 10 random weight initializations.
+Note: Note: MSE and Accuracy are the mean of 10 random weight initializations.
 
 ## Plots
 
@@ -219,8 +219,7 @@ See [Appendix](#appendix) for the loss plot.
 ### Best Configuration
 |   Units   |  Act. Functions  | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs | MEE (TR/VL) | MEE (Internal TS) |
 | :-------: | :--------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :---------: | :---------------- |
-| [12,16,4] | [tanh, identity] | M.S.E |  0.1  | 0.001  |  0.9  |     full     |     827     |             |                   |
-
+| [12,16,4] | [tanh, identity] | M.S.E |  0.1  | 0.001  |  0.9  |     full     |     827     |    19.59    | 22.46             |
 
 ## Plots
 |             **Monk 1 - Loss**              |              **Monk 2 - Loss**              |
