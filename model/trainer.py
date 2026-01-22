@@ -82,38 +82,52 @@ class Trainer:
     # Initialize the datasets
     data_loader = DataLoader(X_dataset=self.X_train, y_dataset=self.y_train)
 
-    # Train
+    # Main Train Loop
     for epoch in range(self.epochs):
       batches = data_loader.get_batches(dataset = (self.X_train, self.y_train), batch_size = self.batch_size, shuffle = self.shuffle_batches, keep_last = self.keep_last_batch) #splits the dataset in batches, cant keep last because of L2
       train_loss = [] #keeps the count of train loss
+      train_acc = [] #keeps the count of acc loss
+      train_mee = [] #keeps the count of mee loss
+
       for x, y in batches:
+        b_size = x.shape[0]
         out = self.nn.forward(x)
-        tr_loss = self.loss.compute_loss(out[-1][-1], y)
+        #train loss
+        nn_output = out[-1][-1]
+        tr_loss = self.loss.compute_loss(nn_output, y)
         train_loss.append(np.mean(tr_loss)) #adds to the count of train loss
+
+        #train acc
+        if plot_accuracy:
+          if self.loss.loss_f == 'binary cross entropy sigmoid':
+            predictions = np.round(sigmoid(nn_output))
+          else:
+            predictions = np.round(nn_output)
+          train_acc.append(predictions == y)
+          
+        # train mee
+        if plot_mee:
+          train_mee.append(mee(y, nn_output))
+
         loss_grad = - self.loss.compute_loss_gradient(out[-1][-1], y) #has to be negative because we add gradients
         grad = self.nn.compute_gradients(out, loss_grad)
-        b_size = x.shape[0]
         self.nn.gradient_descent(gradients = grad, b_size=b_size ,eta = self.eta, lam = self.lam, alpha = self.alpha)
-
       train_loss_vec.append(np.mean(train_loss)) #train loss mean
+
       #train acc
       if plot_accuracy:
-        out = self.nn.forward(self.X_train)[-1][-1] 
-        if self.loss.loss_f == 'binary cross entropy sigmoid':
-          out = sigmoid(out)
+        train_acc_vec.append(np.mean(np.concatenate(train_acc)))
 
-        predictions = np.round(out)
-        train_acc_vec.append(np.mean(predictions == self.y_train))
       #train mee
       if plot_mee:
-        out = self.nn.forward(self.X_train)[-1][-1]  
-        train_mee_vec.append(np.mean(mee(self.y_train, out)))
+        train_mee_vec.append(np.mean(np.concatenate(train_mee)))
       
       #val loss
       if Val_exists:
         out = self.nn.forward(self.X_val)[-1][-1]
         val_loss =  self.loss.compute_loss(out, self.y_val) #computes the test loss
         val_loss_vec.append(np.mean(val_loss)) #val loss mean in the epoch
+
         #val acc
         if plot_accuracy:
           if self.loss.loss_f == 'binary cross entropy sigmoid':
@@ -122,11 +136,12 @@ class Trainer:
           predictions = np.round(out)
           val_acc_vec.append(np.mean(predictions == self.y_val))
 
-        #validation mee
+        #val mee
         if plot_mee:
             out = self.nn.forward(self.X_val)[-1][-1]  
             val_mee_vec.append(np.mean(mee(self.y_val, out)))
 
+        #early stopping
         if np.mean(val_loss) < best_loss * (1 - self.min_improvement):
           best_loss = np.mean(val_loss) 
           best_nn = copy.deepcopy(self.nn)
@@ -151,6 +166,7 @@ class Trainer:
       # Break for early stopping
       if best_epoch_passed >= self.early_stopping:
         break
+
     if plot_accuracy and Val_exists:
       plot_curves(np.array(train_acc_vec), np.array(val_acc_vec), 'accuracy', 'test', title = plot_title, save_plots=True)
     
