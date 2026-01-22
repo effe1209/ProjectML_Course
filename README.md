@@ -129,7 +129,7 @@ One-Hot Encoding: features cardinality is known
 | 1   | Float          |
 
 #### Split Dataset
-To train and test the dataset we need to slip the dataset in training set (80%) and blid test set (20%) to evaluate the generalization capability of our model.
+To train and test the model, we need to split the dataset into a training set (80%) and a blind test set (20%) to evaluate the generalization capability of our model.
 
 <table>
   <thead>
