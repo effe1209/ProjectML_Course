@@ -11,35 +11,16 @@ The neural network framework is used to test and evaluate the performance on two
 - *Monk's Dataset:* a standard benchmark for classification task
 - *ML Cup:* dataset for regression task provided by course.
 
-## Implementation Details
-The framework is divided in object class to ensure modularization, legibility and security.
-### Architecture
-- **Layers**: the network is composed of *fully connected layer*. Each layer is indipendent and managing:
-  - **Weights and Biases**: to compute the linear projection (`net` value)
-  - **Activation Function**: to produce the output `out` the of the layer (non-linear)
-  - **Backward Pass**: to propagate the error `delta` through the weights (*chain rule*)
-- **Neural Network**: the main class that create the entire architecture.
-  - **Initialization:** implement the dynamic `std` based on fan-in/fan-out (Xavier/Glorot or He)
-  - **Forward**: compute all layers' outputs
-  - **Backpropagation**: computation of gradient via chain rule
-  - **Gradient Descent:**
-    - *L2 Regolarization*
-    - *Momentum*
-- **Training:** the class which compute the train phase
-  - *Epoch:* random shuffling of batches at each epoch
-  - *Mini-batch SDG:* Weights updates on a subset
-  - Selection of the best neural network between epoch based on mean loss on validation
-- **Monk Notebook:**
-  - **Model Selection:** select the best configuration based on validation
-    - **Grid Search:** search the best combination of hyperparameter (e.g. learning rate, momentum)
-    - **K-Fold Cross-Validation:** for each configuration of grid search ($`k=5`$)
-      - Select the best configuration based on the mean of fold accuracy
-    - **Metrics**: for each configuration save accuracy, epoch and instability of training (sum between k-fold)
-    - **Early Stopping:** interrupt the training process based on the loss
-      - *patience*
-      - *min_improvement* 
-  - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
-  - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
+
+## Installation
+To execute the experiments, ensure you have **Python** installed.
+We strongly recommended to set up a virtual enviroment to exclude issuess on dependencies.
+To install the required packages run the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
 
 ## Code Structure
 ```text
@@ -72,25 +53,41 @@ ROOT/
 └── requirements.txt            # Project dependencies - Required to run the code
 ```
 
-## Installation
-To execute the experiments, ensure you have **Python** installed.
-We strongly recommended to set up a virtual enviroment to exclude issuess on dependencies.
-To install the required packages run the following command:
-
-```bash
-pip install -r requirements.txt
-```
+## Implementation Details
+The framework is divided in object class to ensure modularization, legibility and security.
+### Architecture
+- **Layers**: the network is composed of *fully connected layer*. Each layer is indipendent and managing:
+  - **Weights and Biases**: to compute the linear projection (`net` value)
+  - **Activation Function**: to produce the output `out` the of the layer (non-linear)
+  - **Backward Pass**: to propagate the error `delta` through the weights (*chain rule*)
+- **Neural Network**: the main class that create the entire architecture.
+  - **Initialization:** implement the dynamic `std` based on fan-in/fan-out (Xavier/Glorot or He)
+  - **Forward**: compute all layers' outputs
+  - **Backpropagation**: computation of gradient via chain rule
+  - **Gradient Descent:**
+    - *L2 Regolarization*
+    - *Momentum*
+- **Training:** the class which compute the train phase
+  - *Epoch:* random shuffling of batches at each epoch
+  - *Mini-batch SDG:* Weights updates on a subset
+  - Selection of the best neural network between epoch based on mean loss on validation
+- **Monk Notebook:**
+  - **Model Selection:** select the best configuration based on validation
+    - **Grid Search:** search the best combination of hyperparameter (e.g. learning rate, momentum)
+    - **K-Fold Cross-Validation:** for each configuration of grid search ($`k=5`$)
+      - Select the best configuration based on the mean of fold accuracy
+    - **Metrics**: for each configuration save accuracy, epoch and instability of training (sum between k-fold)
+    - **Early Stopping:** interrupt the training process based on the loss
+      - *patience*
+      - *min_improvement* 
+  - **Final Retraining:** retrain the best configuration on the full training set (train + validation)
+  - **Model Assessment:** evaluate on unseen *test set* return the final accuracy and the graph
 
 ## Usage
 ### Reproducing Experiment
 To reproduce the experiment on your device and to see the result presented in the report:
 1. Open the jupyter file (`monk.ipynb` or `mlcup.ipynb`)
 2. Run all cells sequentially.
-### Customization
-The notebook by default make a grid search to tune the hyperparameters.
-You can costomization the search space of hyperparameter by modify `CONFIGURATIONS` dictionary.
-- **Log:** To print the the loss at each epoch: `print_epochs=False` in `trainer.train()`
-- **Plot:** To generate and print the plot of loss curves: `plot_epochs=True` in `trainer.train()`
 
 ### Dataset Structure
 #### Monk
