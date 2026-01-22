@@ -20,6 +20,6 @@ def instability_coeff(val_losses: list) -> float:
 
 def tran_val_diff(train_losses: list, val_losses: list) -> float:
     """
-    Computes the difference between train loss vec and val loss vec
+    Computes the difference between train loss vec and val loss vec, only when loss train < val
     """
-    return np.sum(abs(np.array(val_losses) - np.array(train_losses)))
+    return np.sum(np.maximum(0, np.array(val_losses) - np.array(train_losses)))
