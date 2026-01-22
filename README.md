@@ -174,7 +174,7 @@ To train and test the dataset we need to slip the dataset in training set (80%) 
 |      Monk 3      |   [17,4,1]   |   [tanh,identity]    | B.C.E | 5e-4  |  1e-4  |  0.9  |     $16$     |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
 | Monk 3 (no reg.) | [17,16,16,1] | [l.r.,l.r.,identity] | B.C.E | 0.01  |   /    |  0.9  |     $32$     |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
 
-Note: Note: MSE and Accuracy are the mean of 10 random weight initializations.
+Note: MSE and Accuracy are the mean of 10 random weight initializations.
 
 ## Plots
 
