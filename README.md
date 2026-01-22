@@ -170,9 +170,9 @@ To train and test the dataset we need to slip the dataset in training set (80%) 
 ### Hyperparameters and Avarage Prediction
 |     Problem      |    Units     |    Act. Functions    | Loss  |  Eta  | Lambda | Alpha | Mini-Batches | Avg. Epochs |   MSE (TR/TS)   | Accuracy (TR/TS) |
 | :--------------: | :----------: | :------------------: | :---: | :---: | :----: | :---: | :----------: | :---------: | :-------------: | :--------------: |
-|      Monk 1      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.1  | 0.001  |  0.9  |     $32$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
-|      Monk 2      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.25  |   0.   |  0.9  |  full batch  |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
-|      Monk 3      |   [17,4,1]   |   [tanh,sigmoid]    | B.C.E | 0.25  |  0.01  |  0.5  |  full batch  |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
+|      Monk 1      |   [17,4,1]   |   [relu,sigmoid]    | B.C.E | 0.1  | 0.001  |  0.9  |     $32$     |     182     | 6.7e-4 / 1.7e-3 |  100\% / 100\%   |
+|      Monk 2      |   [17,4,1]   |   [l.relu,sigmoid]    | B.C.E | 0.25  |   0.   |  0.9  |  full batch  |     500     |  1.9e-2/2.3e-2  | 97.3\% / 96.7\%  |
+|      Monk 3      |   [17,4,1]   |   [tanh,sigmoid]    | M.S.E | 0.25  |  0.01  |  0.5  |  full batch  |     133     | 8.5e-2 / 7.2e-2 | 93.4\% / 97.2\%  |
 | Monk 3 (no reg.) | [17,8,8,1] | [relu,relu,sigmoid] | B.C.E | 0.25  |   0    |  0.5  |  full batch  |     178     | 1.1e-2 / 4.6e-2 | 99.0\% / 93.9\%  |
 
 Note: Note: MSE and Accuracy are the mean of 10 random weight initializations.
